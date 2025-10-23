@@ -1,0 +1,92 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Header and Navigation */
+header {
+    background: #fff;
+    padding: 1rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    margin: 0;
+    color: #222;
+}
+
+nav {
+    margin-top: 0.5rem;
+}
+
+nav a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #000;
+}
+
+/* Main content area */
+main {
+    max-width: 1200px;
+    margin: 2rem auto; /* Center the content */
+    padding: 0 2rem;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    display: grid;
+    /* This creates a responsive grid: 
+       - 1 column on small screens
+       - 2 columns on medium screens
+       - 3 columns on large screens
+    */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem; /* Space between items */
+}
+
+.art-item {
+    background: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.art-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Makes images square */
+    object-fit: cover; /* Prevents stretching */
+}
+
+.art-item h3 {
+    margin: 0.5rem 0;
+    color: #222;
+}
+
+.art-item p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    color: #888;
+    font-size: 0.9rem;
+}
