@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Art Gallery - Inesa Cole ART</title>
     <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 </head>
 <body>
 
@@ -19,12 +21,14 @@
 
     <main>
         <h2>Gallery</h2>
-        <p>Browse the collection of original paintings.</p>
+        <p>Browse the collection of original paintings. Click on any image for a detailed view.</p>
 
         <div class="gallery-grid">
             
-           <div class="art-item">
-                <img src="images/windmill-field.jpg" alt="Painting of a windmill in a field">
+            <div class="art-item">
+                <a href="images/windmill-field.jpg" data-lightbox="art-gallery" data-title="Windmill in Bloom - Oil on canvas, 80x80 cm">
+                    <img src="images/windmill-field.jpg" alt="Painting of a windmill in a field">
+                </a>
                 <h3>Windmill in Bloom</h3>
                 <p>Oil on canvas, 80x80 cm</p>
                 <div class="price">
@@ -33,7 +37,9 @@
             </div>
 
             <div class="art-item">
-                <img src="images/stormy-sea.jpg" alt="Painting of a stormy sea and beach">
+                <a href="images/stormy-sea.jpg" data-lightbox="art-gallery" data-title="The Coming Storm - Oil on canvas, 70x90 cm">
+                    <img src="images/stormy-sea.jpg" alt="Painting of a stormy sea and beach">
+                </a>
                 <h3>The Coming Storm</h3>
                 <p>Oil on canvas, 70x90 cm</p>
                 <div class="price">
@@ -42,7 +48,9 @@
             </div>
             
             <div class="art-item">
-                <img src="images/river-bank.jpg" alt="Painting of a river bank with heavy texture">
+                <a href="images/river-bank.jpg" data-lightbox="art-gallery" data-title="River Bank - Textured acrylic on canvas, 60x60 cm">
+                    <img src="images/river-bank.jpg" alt="Painting of a river bank with heavy texture">
+                </a>
                 <h3>River Bank</h3>
                 <p>Textured acrylic on canvas, 60x60 cm</p>
                 <div class="price">
@@ -55,6 +63,9 @@
     <footer>
         <p>&copy; 2025 Inesa Cole. All rights reserved.</p>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
 
 </body>
 </html>
