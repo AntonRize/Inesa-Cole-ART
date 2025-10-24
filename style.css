@@ -1,24 +1,36 @@
-/* General page styling */
+/* --- Import Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+
+/* Font variables:
+   'Playfair Display' for titles.
+   'Lato' for body text.
+*/
+
+/* --- General page styling --- */
 body {
-    font-family: Arial, sans-serif;
+    /* We use Lato as the default font */
+    font-family: 'Lato', Arial, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #FAFAFA; /* A very light grey, softer than white */
+    color: #333; /* Dark grey text, softer than black */
 }
 
-/* Header and Navigation */
+/* --- Header and Navigation --- */
 header {
-    background: #fff;
+    background: #FFFFFF;
     padding: 1rem 2rem;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #EEE;
 }
 
 header h1 {
     margin: 0;
     color: #222;
+    /* Use the elegant serif font for the main title */
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; /* Make it bigger */
 }
 
 nav {
@@ -31,62 +43,84 @@ nav a {
     text-decoration: none;
     color: #555;
     font-weight: bold;
+    text-transform: uppercase; /* e.g., HOME, GALLERY, ABOUT */
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
 }
 
 nav a:hover {
     color: #000;
 }
 
-/* Main content area */
+/* --- Main content area --- */
 main {
     max-width: 1200px;
-    margin: 2rem auto; /* Center the content */
+    margin: 2rem auto;
     padding: 0 2rem;
 }
 
-/* Gallery Grid */
+main h2 {
+    /* Titles inside the page also use the serif font */
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #222;
+}
+
+/* --- Gallery Grid --- */
 .gallery-grid {
     display: grid;
-    /* This creates a responsive grid: 
-       - 1 column on small screens
-       - 2 columns on medium screens
-       - 3 columns on large screens
-    */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem; /* Space between items */
+    gap: 2rem;
 }
 
 .art-item {
-    background: #fff;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    text-align: center;
+    background: #FFFFFF;
+    border: 1px solid #EEE;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* A bit softer shadow */
+    text-align: left; /* Align text to the left */
+    transition: box-shadow 0.3s ease; /* Add subtle hover effect */
+}
+
+.art-item:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
 .art-item img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1; /* Makes images square */
-    object-fit: cover; /* Prevents stretching */
+    height: 300px; /* Fixed height for uniformity */
+    object-fit: cover; /* Will crop, not stretch */
 }
 
 .art-item h3 {
-    margin: 0.5rem 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
     color: #222;
+    margin: 1rem 1.5rem 0.5rem 1.5rem; /* Add padding */
 }
 
 .art-item p {
-    margin: 0.25rem 0;
+    margin: 0.25rem 1.5rem;
     font-size: 0.9rem;
     color: #666;
 }
 
-/* Footer */
+/* This is a placeholder for the price/button */
+.art-item .price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
+
+/* --- Footer --- */
 footer {
     text-align: center;
     padding: 2rem;
     margin-top: 2rem;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #EEE;
     color: #888;
     font-size: 0.9rem;
 }
