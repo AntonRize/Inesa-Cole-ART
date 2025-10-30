@@ -125,3 +125,123 @@ footer {
     color: #888;
     font-size: 0.9rem;
 }
+
+
+/* --- Homepage Hero Section --- */
+
+.hero-section {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    
+    /* We use the dramatic sea image */
+    background-image: url('images/stormy-sea.jpg');
+    background-size: cover;
+    background-position: center;
+
+    /* This applies the dark overlay for text readability */
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4); 
+}
+
+/* We must reset margin/padding on main ONLY for the homepage */
+body.homepage main {
+    margin: 0 auto;
+    padding: 0;
+    max-width: none; /* Allow hero to be full-width */
+}
+
+/* This is the text and button container */
+.hero-content {
+    /* This calls our animation */
+    animation: fadeInSlideUp 1.2s ease-out forwards;
+    padding: 2rem;
+}
+
+.hero-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+    color: #FFFFFF;
+}
+
+.hero-big-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0 0 2.5rem 0;
+    line-height: 1.2;
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border: 2px solid #FFFFFF;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #FFFFFF;
+    color: #000000; /* Text color changes to black on hover */
+}
+
+/* --- Transparent Header for Homepage --- */
+
+.transparent-header {
+    position: absolute; /* Takes the header out of the page flow */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Faint white border */
+    padding: 1rem 2rem; /* Keep padding consistent */
+}
+
+/* Make title a link and white */
+.transparent-header h1 a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.transparent-header nav a {
+    color: #FFFFFF;
+    opacity: 0.8;
+}
+
+.transparent-header nav a:hover {
+    color: #FFFFFF;
+    opacity: 1;
+}
+
+/* We must also override the standard header H1 style 
+  which is inside the .transparent-header 
+*/
+.transparent-header h1 {
+    color: #FFFFFF;
+}
+
+/* --- Animation Keyframes --- */
+/* This defines the "fadeInSlideUp" animation */
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
