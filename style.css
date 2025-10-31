@@ -144,6 +144,8 @@ footer {
 
     /* This applies the dark overlay for text readability */
     box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4); 
+   /* ADD THIS NEW LINE for the image fade-in effect */
+    animation: fadeInBackground 4s ease-out forwards;
 }
 
 /* We must reset margin/padding on main ONLY for the homepage */
@@ -156,7 +158,7 @@ body.homepage main {
 /* This is the text and button container */
 .hero-content {
     /* This calls our animation */
-    animation: fadeInSlideUp 1.2s ease-out forwards;
+    animation: fadeInSlideUp 4s ease-out forwards;
     padding: 2rem;
 }
 
@@ -243,5 +245,15 @@ body.homepage main {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+/* --- New Animation Keyframes for background image fade-in --- */
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
