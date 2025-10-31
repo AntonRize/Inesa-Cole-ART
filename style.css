@@ -145,7 +145,7 @@ footer {
     /* This applies the dark overlay for text readability */
     box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4); 
    /* ADD THIS NEW LINE for the image fade-in effect */
-    animation: fadeInBackground 4s ease-out forwards;
+    animation: fadeInBackground 7s ease-out forwards;
 }
 
 /* We must reset margin/padding on main ONLY for the homepage */
