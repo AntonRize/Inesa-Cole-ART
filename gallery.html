@@ -3,69 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Art Gallery - Inesa Cole ART</title>
+    <meta name="description" content="Browse and purchase original textured paintings by Inesa Cole. Oil and acrylic artworks available for sale.">
+    <title>Gallery - Inesa Cole ART</title>
     <link rel="stylesheet" href="style.css">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
 </head>
 <body>
 
     <header>
-        <h1>Inesa Cole ART</h1>
+        <h1><a href="index.html">Inesa Cole ART</a></h1>
         <nav>
             <a href="index.html">Home</a>
-            <a href="gallery.html">Gallery</a>
-            <a href="about.html">About</a>
+            <a href="gallery.html" class="active">Gallery</a>
+            <a href="bio.html">Bio</a>
         </nav>
     </header>
 
     <main>
         <h2>Gallery</h2>
-        <p>Browse the collection of original paintings. Click on any image for a detailed view.</p>
+        <p class="page-subtitle">Browse the collection of original paintings. Click any image for a closer look.</p>
 
-        <div class="gallery-grid">
-            
-            <div class="art-item">
-                <a href="images/windmill-field.jpg" data-lightbox="art-gallery" data-title="Windmill in Bloom - Oil on canvas, 80x80 cm">
-                    <img src="images/windmill-field.jpg" alt="Painting of a windmill in a field">
-                </a>
-                <h3>Windmill in Bloom</h3>
-                <p>Oil on canvas, 80x80 cm</p>
-                <div class="price">
-                    $350
-                    </div>
-            </div>
+        <!-- Filter Controls -->
+        <div class="gallery-controls">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="available">Available</button>
+            <button class="filter-btn" data-filter="sold">Sold</button>
+        </div>
 
-            <div class="art-item">
-                <a href="images/stormy-sea.jpg" data-lightbox="art-gallery" data-title="The Coming Storm - Oil on canvas, 70x90 cm">
-                    <img src="images/stormy-sea.jpg" alt="Painting of a stormy sea and beach">
-                </a>
-                <h3>The Coming Storm</h3>
-                <p>Oil on canvas, 70x90 cm</p>
-                <div class="price">
-                    $420
-                    </div>
-            </div>
-            
-            <div class="art-item">
-                <a href="images/river-bank.jpg" data-lightbox="art-gallery" data-title="River Bank - Textured acrylic on canvas, 60x60 cm">
-                    <img src="images/river-bank.jpg" alt="Painting of a river bank with heavy texture">
-                </a>
-                <h3>River Bank</h3>
-                <p>Textured acrylic on canvas, 60x60 cm</p>
-                <div class="price">
-                    $310
-                    </div>
-            </div>
-
-        </div> </main>
+        <!-- Gallery Grid (dynamically populated) -->
+        <div class="gallery-grid" id="gallery-grid">
+            <div class="gallery-loading">Loading paintings...</div>
+        </div>
+    </main>
 
     <footer>
         <p>&copy; 2025 Inesa Cole. All rights reserved.</p>
+        <p><a href="index.html">Home</a> &middot; <a href="bio.html">Bio</a></p>
     </footer>
 
+    <!-- Lightbox2 library for image zoom -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+    <!-- Site scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/gallery.js"></script>
 
 </body>
 </html>
