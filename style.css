@@ -1,36 +1,73 @@
-/* --- Import Fonts --- */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+/* ============================================================
+   Inesa Cole ART - Complete Stylesheet
+   ============================================================
+   Typography: Playfair Display (titles), Lato (body)
+   Color Palette:
+     Background: #FAFAFA  |  Card: #FFFFFF
+     Text: #333 (body), #222 (headings)
+     Accent: #8B6914 (warm gold)
+     Muted: #666, #888, #AAA
+   ============================================================ */
 
-/* Font variables:
-   'Playfair Display' for titles.
-   'Lato' for body text.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
 
-/* --- General page styling --- */
+/* --- CSS Custom Properties --- */
+:root {
+    --color-bg: #FAFAFA;
+    --color-card: #FFFFFF;
+    --color-text: #333;
+    --color-heading: #222;
+    --color-accent: #8B6914;
+    --color-accent-hover: #A37E1A;
+    --color-muted: #666;
+    --color-light: #888;
+    --color-border: #EEE;
+    --color-overlay: rgba(0, 0, 0, 0.4);
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Lato', Arial, sans-serif;
+    --max-width: 1200px;
+    --transition: 0.3s ease;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    /* We use Lato as the default font */
-    font-family: 'Lato', Arial, sans-serif;
+    font-family: var(--font-body);
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    background-color: #FAFAFA; /* A very light grey, softer than white */
-    color: #333; /* Dark grey text, softer than black */
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
-/* --- Header and Navigation --- */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* --- Header & Navigation --- */
 header {
-    background: #FFFFFF;
+    background: var(--color-card);
     padding: 1rem 2rem;
     text-align: center;
-    border-bottom: 1px solid #EEE;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    z-index: 100;
 }
 
 header h1 {
     margin: 0;
-    color: #222;
-    /* Use the elegant serif font for the main title */
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem; /* Make it bigger */
+    color: var(--color-heading);
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+}
+
+header h1 a {
+    color: inherit;
+    text-decoration: none;
 }
 
 nav {
@@ -43,175 +80,30 @@ nav a {
     text-decoration: none;
     color: #555;
     font-weight: bold;
-    text-transform: uppercase; /* e.g., HOME, GALLERY, ABOUT */
+    text-transform: uppercase;
     font-size: 0.9rem;
     letter-spacing: 0.05em;
+    transition: color var(--transition);
 }
 
-nav a:hover {
+nav a:hover,
+nav a.active {
     color: #000;
 }
 
-/* --- Main content area --- */
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 2rem;
-}
-
-main h2 {
-    /* Titles inside the page also use the serif font */
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #222;
-}
-
-/* --- Gallery Grid --- */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.art-item {
-    background: #FFFFFF;
-    border: 1px solid #EEE;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* A bit softer shadow */
-    text-align: left; /* Align text to the left */
-    transition: box-shadow 0.3s ease; /* Add subtle hover effect */
-}
-
-.art-item:hover {
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-}
-
-.art-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    cursor: zoom-in; /* <-- ADD THIS LINE */
-}
-
-.art-item h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: #222;
-    margin: 1rem 1.5rem 0.5rem 1.5rem; /* Add padding */
-}
-
-.art-item p {
-    margin: 0.25rem 1.5rem;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* This is a placeholder for the price/button */
-.art-item .price {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-    margin: 1rem 1.5rem 1.5rem 1.5rem;
-}
-
-
-/* --- Footer --- */
-footer {
-    text-align: center;
-    padding: 2rem;
-    margin-top: 2rem;
-    border-top: 1px solid #EEE;
-    color: #888;
-    font-size: 0.9rem;
-}
-
-
-/* --- Homepage Hero Section --- */
-
-.hero-section {
-    height: 100vh; /* Full viewport height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #FFFFFF;
-    
-    /* We use the dramatic sea image */
-    background-image: url('images/river-bank.jpg');
-    background-size: cover;
-    background-position: center;
-
-    /* This applies the dark overlay for text readability */
-    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.4); 
-   /* ADD THIS NEW LINE for the image fade-in effect */
-    animation: fadeInBackground 7s ease-out forwards;
-}
-
-/* We must reset margin/padding on main ONLY for the homepage */
-body.homepage main {
-    margin: 0 auto;
-    padding: 0;
-    max-width: none; /* Allow hero to be full-width */
-}
-
-/* This is the text and button container */
-.hero-content {
-    /* This calls our animation */
-    animation: fadeInSlideUp 4s ease-out forwards;
-    padding: 2rem;
-}
-
-.hero-subtitle {
-    font-family: 'Lato', sans-serif;
-    font-size: 1.2rem;
-    margin: 0 0 1rem 0;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.9;
-    color: #FFFFFF;
-}
-
-.hero-big-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin: 0 0 2.5rem 0;
-    line-height: 1.2;
-}
-
-.hero-button {
-    display: inline-block;
-    padding: 0.8rem 2rem;
-    border: 2px solid #FFFFFF;
-    color: #FFFFFF;
-    text-decoration: none;
-    font-family: 'Lato', sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.hero-button:hover {
-    background-color: #FFFFFF;
-    color: #000000; /* Text color changes to black on hover */
-}
-
-/* --- Transparent Header for Homepage --- */
-
+/* --- Transparent Header (Homepage) --- */
 .transparent-header {
-    position: absolute; /* Takes the header out of the page flow */
+    position: absolute;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 10;
     background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Faint white border */
-    padding: 1rem 2rem; /* Keep padding consistent */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2rem;
 }
 
-/* Make title a link and white */
+.transparent-header h1,
 .transparent-header h1 a {
     color: #FFFFFF;
     text-decoration: none;
@@ -222,20 +114,1080 @@ body.homepage main {
     opacity: 0.8;
 }
 
-.transparent-header nav a:hover {
+.transparent-header nav a:hover,
+.transparent-header nav a.active {
     color: #FFFFFF;
     opacity: 1;
 }
 
-/* We must also override the standard header H1 style 
-  which is inside the .transparent-header 
-*/
-.transparent-header h1 {
+/* --- Main Content --- */
+main {
+    max-width: var(--max-width);
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+main h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--color-heading);
+}
+
+main .page-subtitle {
+    text-align: center;
+    color: var(--color-muted);
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-light);
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--color-muted);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--color-heading);
+}
+
+/* ============================================================
+   HOMEPAGE - Hero Section
+   ============================================================ */
+
+body.homepage main {
+    margin: 0 auto;
+    padding: 0;
+    max-width: none;
+}
+
+.hero-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    background-image: url('images/river-bank.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 2000px var(--color-overlay);
+    animation: fadeInBackground 7s ease-out forwards;
+    position: relative;
+}
+
+.hero-content {
+    animation: fadeInSlideUp 4s ease-out forwards;
+    padding: 2rem;
+    max-width: 700px;
+}
+
+.hero-subtitle {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.9;
+    color: #FFFFFF;
+    font-weight: 300;
+}
+
+.hero-big-text {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0 0 2.5rem 0;
+    line-height: 1.2;
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    border: 2px solid #FFFFFF;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.hero-button:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+/* --- Homepage Featured Section --- */
+.featured-section {
+    max-width: var(--max-width);
+    margin: 4rem auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.featured-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-heading);
+    margin-bottom: 0.5rem;
+}
+
+.featured-section .section-subtitle {
+    color: var(--color-muted);
+    margin-bottom: 2.5rem;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.featured-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.featured-item img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.featured-item:hover img {
+    transform: scale(1.05);
+}
+
+.featured-item .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: #fff;
+    text-align: left;
+}
+
+.featured-item .overlay h3 {
+    font-family: var(--font-heading);
+    margin: 0 0 0.25rem 0;
+    font-size: 1.3rem;
+}
+
+.featured-item .overlay p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.view-all-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    border: 2px solid var(--color-heading);
+    color: var(--color-heading);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.view-all-link:hover {
+    background-color: var(--color-heading);
     color: #FFFFFF;
 }
 
-/* --- Animation Keyframes --- */
-/* This defines the "fadeInSlideUp" animation */
+/* --- Artist Statement Section (Homepage) --- */
+.artist-statement {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.artist-statement blockquote {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--color-heading);
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+}
+
+.artist-statement cite {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   GALLERY PAGE
+   ============================================================ */
+
+.gallery-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    border-color: var(--color-heading);
+    color: var(--color-heading);
+    background: var(--color-bg);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.art-item {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    text-align: left;
+    transition: box-shadow var(--transition), transform var(--transition);
+    overflow: hidden;
+}
+
+.art-item:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.art-item .image-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.art-item .image-wrapper img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.5s ease;
+}
+
+.art-item:hover .image-wrapper img {
+    transform: scale(1.03);
+}
+
+.art-item .sold-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #C0392B;
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.art-item .item-details {
+    padding: 1.2rem 1.5rem 1.5rem;
+}
+
+.art-item h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-heading);
+    margin: 0 0 0.4rem 0;
+}
+
+.art-item .medium {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0 0 0.3rem 0;
+}
+
+.art-item .description {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+.art-item .price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.art-item .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-heading);
+}
+
+.art-item .price.sold {
+    text-decoration: line-through;
+    color: var(--color-light);
+}
+
+.buy-button {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--color-accent);
+    color: #FFFFFF;
+    border: none;
+    font-family: var(--font-body);
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background-color var(--transition);
+    text-decoration: none;
+}
+
+.buy-button:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.buy-button:disabled,
+.buy-button.sold-out {
+    background-color: #CCC;
+    cursor: not-allowed;
+}
+
+/* Gallery loading state */
+.gallery-loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-muted);
+}
+
+.gallery-empty {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+/* ============================================================
+   BIO / ABOUT PAGE
+   ============================================================ */
+
+.bio-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+
+.bio-photo-wrapper {
+    position: relative;
+}
+
+.bio-photo-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.bio-text h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-heading);
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.bio-text p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+.bio-details {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.bio-details dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1.5rem;
+}
+
+.bio-details dt {
+    font-weight: bold;
+    color: var(--color-heading);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.bio-details dd {
+    margin: 0;
+    color: var(--color-muted);
+}
+
+/* Contact section within Bio */
+.contact-section {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    text-align: center;
+}
+
+.contact-section h3 {
+    font-family: var(--font-heading);
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.contact-section p {
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+}
+
+.contact-email {
+    display: inline-block;
+    padding: 0.7rem 2rem;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    transition: all var(--transition);
+}
+
+.contact-email:hover {
+    background: var(--color-accent);
+    color: #FFFFFF;
+}
+
+/* ============================================================
+   ADMIN PANEL
+   ============================================================ */
+
+body.admin-page {
+    background: #F0F2F5;
+}
+
+.admin-header {
+    background: var(--color-heading);
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header h1 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 0;
+    color: #fff;
+}
+
+.admin-header .admin-nav a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-size: 0.9rem;
+    transition: color var(--transition);
+}
+
+.admin-header .admin-nav a:hover {
+    color: #fff;
+}
+
+/* Login screen */
+.login-screen {
+    max-width: 400px;
+    margin: 10vh auto;
+    padding: 3rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.login-screen h2 {
+    font-family: var(--font-heading);
+    margin-top: 0;
+    color: var(--color-heading);
+}
+
+.login-screen p {
+    color: var(--color-muted);
+    margin-bottom: 2rem;
+}
+
+.login-screen input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--color-border);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color var(--transition);
+}
+
+.login-screen input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.login-screen .login-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background var(--transition);
+}
+
+.login-screen .login-btn:hover {
+    background: var(--color-accent-hover);
+}
+
+.login-error {
+    color: #C0392B;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+/* Admin dashboard */
+.admin-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.admin-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-toolbar h2 {
+    font-family: var(--font-heading);
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: left;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--color-accent-hover);
+}
+
+.btn-secondary {
+    background: #fff;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    border-color: #999;
+}
+
+.btn-danger {
+    background: #C0392B;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #A93226;
+}
+
+.btn-success {
+    background: #27AE60;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: #219A52;
+}
+
+/* Painting cards in admin */
+.admin-paintings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.admin-painting-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: box-shadow var(--transition);
+}
+
+.admin-painting-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.admin-painting-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.admin-card-body {
+    padding: 1rem 1.2rem;
+}
+
+.admin-card-body h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    margin: 0 0 0.3rem 0;
+    color: var(--color-heading);
+}
+
+.admin-card-body .meta {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+}
+
+.admin-card-body .price-display {
+    font-weight: bold;
+    color: var(--color-heading);
+    font-size: 1.1rem;
+}
+
+.admin-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1.2rem;
+    border-top: 1px solid var(--color-border);
+    background: #FAFAFA;
+}
+
+.admin-card-actions .btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-left: 0.5rem;
+}
+
+.status-badge.available {
+    background: #E8F5E9;
+    color: #27AE60;
+}
+
+.status-badge.sold {
+    background: #FFEBEE;
+    color: #C0392B;
+}
+
+/* Modal / Editor */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: var(--color-card);
+    width: 100%;
+    max-width: 650px;
+    margin: 2rem auto;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h3 {
+    font-family: var(--font-heading);
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-muted);
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: var(--color-heading);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    background: #FAFAFA;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-heading);
+    margin-bottom: 0.4rem;
+}
+
+.form-group .help-text {
+    font-size: 0.8rem;
+    color: var(--color-light);
+    margin-top: 0.3rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="url"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 2px solid var(--color-border);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: #fff;
+    transition: border-color var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Image upload area */
+.image-upload-area {
+    border: 2px dashed var(--color-border);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: #FAFAFA;
+    position: relative;
+}
+
+.image-upload-area:hover {
+    border-color: var(--color-accent);
+    background: #FFF;
+}
+
+.image-upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-upload-area .upload-icon {
+    font-size: 2.5rem;
+    color: var(--color-light);
+    margin-bottom: 0.5rem;
+}
+
+.image-upload-area .upload-text {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+}
+
+.image-upload-area .upload-hint {
+    color: var(--color-light);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    margin-top: 1rem;
+    display: none;
+}
+
+/* Toggle switch */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toggle {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    appearance: none;
+    background: #CCC;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background var(--transition);
+    flex-shrink: 0;
+}
+
+.toggle:checked {
+    background: #27AE60;
+}
+
+.toggle::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform var(--transition);
+}
+
+.toggle:checked::before {
+    transform: translateX(24px);
+}
+
+.toggle-label {
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+/* Admin notification toast */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--color-heading);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 2000;
+    animation: toastSlideIn 0.3s ease;
+    max-width: 350px;
+}
+
+.toast.success {
+    background: #27AE60;
+}
+
+.toast.error {
+    background: #C0392B;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Shopify cart widget */
+.shopify-cart-badge {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.shopify-cart-badge:hover {
+    transform: scale(1.1);
+    background: var(--color-accent-hover);
+}
+
+.shopify-cart-badge .cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #C0392B;
+    color: #fff;
+    font-size: 0.7rem;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Shopify embed container */
+.shopify-buy-frame {
+    margin-top: 0.5rem;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 
 @keyframes fadeInSlideUp {
     from {
@@ -247,13 +1199,81 @@ body.homepage main {
         transform: translateY(0);
     }
 }
-/* --- New Animation Keyframes for background image fade-in --- */
 
 @keyframes fadeInBackground {
-    from {
-        opacity: 0;
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
     }
-    to {
-        opacity: 1;
+
+    .hero-big-text {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bio-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .bio-photo-wrapper img {
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .modal {
+        margin: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    nav a {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    main {
+        padding: 0 1rem;
+    }
+
+    .hero-big-text {
+        font-size: 1.8rem;
+    }
+
+    .admin-paintings-grid {
+        grid-template-columns: 1fr;
     }
 }

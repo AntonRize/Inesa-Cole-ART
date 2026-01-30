@@ -1,0 +1,44 @@
+[
+  {
+    "id": "painting-001",
+    "title": "Windmill in Bloom",
+    "medium": "Oil on canvas",
+    "dimensions": "80x80 cm",
+    "price": 350,
+    "image": "images/windmill-field.jpg",
+    "alt": "Painting of a windmill in a blooming field",
+    "description": "A vibrant landscape featuring a traditional windmill surrounded by blooming wildflowers. Rich textures bring the countryside scene to life.",
+    "available": true,
+    "featured": true,
+    "year": 2025,
+    "shopifyProductId": ""
+  },
+  {
+    "id": "painting-002",
+    "title": "The Coming Storm",
+    "medium": "Oil on canvas",
+    "dimensions": "70x90 cm",
+    "price": 420,
+    "image": "images/stormy-sea.jpg",
+    "alt": "Painting of a stormy sea and beach",
+    "description": "A dramatic seascape capturing the raw power of nature as storm clouds gather over turbulent waters. Bold brushstrokes convey the energy of the approaching tempest.",
+    "available": true,
+    "featured": true,
+    "year": 2025,
+    "shopifyProductId": ""
+  },
+  {
+    "id": "painting-003",
+    "title": "River Bank",
+    "medium": "Textured acrylic on canvas",
+    "dimensions": "60x60 cm",
+    "price": 310,
+    "image": "images/river-bank.jpg",
+    "alt": "Painting of a river bank with heavy texture",
+    "description": "A serene riverside scene rendered in heavily textured acrylic. The impasto technique creates a tactile quality that invites the viewer to experience the landscape beyond the visual.",
+    "available": true,
+    "featured": true,
+    "year": 2025,
+    "shopifyProductId": ""
+  }
+]
