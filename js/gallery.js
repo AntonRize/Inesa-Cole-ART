@@ -25,10 +25,9 @@
        4. For each painting in admin, add the Shopify Product ID
        ---------------------------------------------------------- */
     const SHOPIFY_CONFIG = {
-        domain: 'your-store.myshopify.com',        // Replace with your Shopify store domain
-        storefrontAccessToken: 'your-token-here',   // Replace with your Storefront API token
-        // Set to true once you've configured your Shopify store
-        enabled: false
+        domain: 'z0byzs-ha.myshopify.com',
+        storefrontAccessToken: 'ab2db4a231ed99255380904ce548fb12',
+        enabled: true
     };
 
     /**
