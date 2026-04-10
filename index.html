@@ -19,74 +19,8 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <div class="hero-content">
-                <h2 class="hero-subtitle">Original Textured Paintings</h2>
-                <p class="hero-big-text">Art That You Can Feel</p>
-                <a href="gallery.html" class="hero-button">View The Gallery</a>
-            </div>
-        </div>
-
-        <!-- Featured Works -->
-        <div class="featured-section">
-            <h2>Featured Works</h2>
-            <p class="section-subtitle">A selection of recent paintings available for purchase</p>
-
-            <div class="featured-grid" id="featured-grid">
-                <!-- Populated by JavaScript -->
-            </div>
-
-            <a href="gallery.html" class="view-all-link">View Full Gallery</a>
-        </div>
-
-        <!-- Artist Statement -->
-        <div class="artist-statement">
-            <blockquote>
-                "I paint what I feel, not what I see. Every brushstroke carries texture and emotion, inviting you to experience the landscape not just with your eyes, but with your soul."
-            </blockquote>
-            <cite>&#8212; Inesa Cole</cite>
-        </div>
+        <div class="hero-section"></div>
     </main>
-
-    <footer>
-        <p>&copy; 2025 Inesa Cole. All rights reserved.</p>
-        <p><a href="gallery.html">Gallery</a> &middot; <a href="bio.html">Bio</a></p>
-    </footer>
-
-    <script src="js/main.js"></script>
-    <script>
-        // Load featured paintings on homepage
-        document.addEventListener('DOMContentLoaded', async function () {
-            const paintings = await getPaintings();
-            const featured = paintings.filter(p => p.featured && p.available).slice(0, 3);
-            const grid = document.getElementById('featured-grid');
-
-            if (featured.length === 0) {
-                // Show all available paintings if none are marked featured
-                const available = paintings.filter(p => p.available).slice(0, 3);
-                renderFeatured(available, grid);
-            } else {
-                renderFeatured(featured, grid);
-            }
-        });
-
-        function renderFeatured(paintings, container) {
-            if (paintings.length === 0) {
-                container.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#888;">New paintings coming soon.</p>';
-                return;
-            }
-            container.innerHTML = paintings.map(p => `
-                <a href="gallery.html" class="featured-item">
-                    <img src="${p.image || p.imageData}" alt="${p.alt || p.title}" loading="lazy">
-                    <div class="overlay">
-                        <h3>${p.title}</h3>
-                        <p>${p.medium} &middot; ${formatPrice(p.price)}</p>
-                    </div>
-                </a>
-            `).join('');
-        }
-    </script>
 
 </body>
 </html>
