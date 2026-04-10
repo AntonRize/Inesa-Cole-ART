@@ -178,7 +178,7 @@ body.homepage main {
     justify-content: center;
     text-align: center;
     color: #FFFFFF;
-    background-image: url('images/river-bank.jpg');
+    background-image: url('images/hero-home.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: inset 0 0 0 2000px var(--color-overlay);
