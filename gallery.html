@@ -6,7 +6,47 @@
     <meta name="description" content="Browse and purchase original textured paintings by Inesa Cole. Oil and acrylic artworks available for sale.">
     <title>Gallery - Inesa Cole ART</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <style>
+        /* Fullscreen image viewer */
+        .viewer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.92);
+            cursor: zoom-out;
+            justify-content: center;
+            align-items: center;
+        }
+        .viewer-overlay.active { display: flex; }
+        .viewer-overlay img {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+        .viewer-caption {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 0; right: 0;
+            text-align: center;
+            color: #ccc;
+            font-size: 0.95rem;
+            font-family: var(--font-body, sans-serif);
+            pointer-events: none;
+        }
+        .viewer-close {
+            position: fixed;
+            top: 1rem; right: 1.5rem;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 10000;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+    </style>
 </head>
 <body>
 
@@ -41,13 +81,48 @@
         <p><a href="index.html">Home</a> &middot; <a href="bio.html">Bio</a></p>
     </footer>
 
-    <!-- Lightbox2 library for image zoom -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <!-- Fullscreen image viewer -->
+    <div class="viewer-overlay" id="viewer-overlay">
+        <button class="viewer-close" id="viewer-close">&times;</button>
+        <img id="viewer-img" src="" alt="">
+        <div class="viewer-caption" id="viewer-caption"></div>
+    </div>
 
     <!-- Site scripts -->
     <script src="js/main.js"></script>
     <script src="js/gallery.js"></script>
+    <script>
+        // Fullscreen viewer logic
+        (function() {
+            const overlay = document.getElementById('viewer-overlay');
+            const viewerImg = document.getElementById('viewer-img');
+            const viewerCaption = document.getElementById('viewer-caption');
+
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('.image-wrapper a');
+                if (link) {
+                    e.preventDefault();
+                    viewerImg.src = link.href;
+                    viewerCaption.textContent = link.dataset.title || '';
+                    overlay.classList.add('active');
+                }
+            });
+
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay || e.target.id === 'viewer-close') {
+                    overlay.classList.remove('active');
+                    viewerImg.src = '';
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    overlay.classList.remove('active');
+                    viewerImg.src = '';
+                }
+            });
+        })();
+    </script>
 
 </body>
 </html>

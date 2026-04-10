@@ -70,7 +70,7 @@
             return `
                 <div class="art-item" data-id="${sanitize(painting.id)}">
                     <div class="image-wrapper">
-                        <a href="${sanitize(painting.image)}" data-lightbox="art-gallery" data-title="${sanitize(painting.title)} - ${sanitize(painting.medium)}, ${sanitize(painting.dimensions)}">
+                        <a href="${sanitize(painting.image)}" data-title="${sanitize(painting.title)} - ${sanitize(painting.medium)}, ${sanitize(painting.dimensions)}">
                             <img src="${sanitize(painting.image)}" alt="${sanitize(painting.alt || painting.title)}" loading="lazy">
                         </a>
                         ${soldBadge}
@@ -83,7 +83,6 @@
                             <span class="${priceClass}">${formatPrice(painting.price)}</span>
                             ${buyButton}
                         </div>
-                        ${painting.shopifyProductId ? `<div class="shopify-buy-frame" id="shopify-${sanitize(painting.id)}"></div>` : ''}
                     </div>
                 </div>
             `;
@@ -127,128 +126,90 @@
     }
 
     /* ----------------------------------------------------------
-       SHOPIFY BUY BUTTON SDK INTEGRATION
+       SHOPIFY BUY SDK INTEGRATION
        ----------------------------------------------------------
-       Uses the Shopify Buy Button JS SDK (lightweight embed).
-       When enabled, this replaces the basic "Buy Now" button
-       with Shopify's hosted checkout flow.
+       Uses the Shopify JS Buy SDK (lightweight client) to create
+       a checkout and redirect. The site's own "Buy Now" button
+       is used for all paintings — no Shopify visual components.
        ---------------------------------------------------------- */
 
     /**
-     * Initialize the Shopify Buy SDK.
+     * Initialize the Shopify JS Buy SDK client.
      */
     function initShopify() {
         const scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
 
-        if (window.ShopifyBuy && window.ShopifyBuy.UI) {
-            setupShopifyUI();
+        if (window.ShopifyBuy) {
+            shopifyClient = window.ShopifyBuy.buildClient({
+                domain: SHOPIFY_CONFIG.domain,
+                storefrontAccessToken: SHOPIFY_CONFIG.storefrontAccessToken
+            });
             return;
         }
 
         const script = document.createElement('script');
         script.async = true;
         script.src = scriptURL;
-        script.onload = setupShopifyUI;
+        script.onload = function () {
+            shopifyClient = window.ShopifyBuy.buildClient({
+                domain: SHOPIFY_CONFIG.domain,
+                storefrontAccessToken: SHOPIFY_CONFIG.storefrontAccessToken
+            });
+        };
         document.head.appendChild(script);
     }
 
     /**
-     * Set up Shopify UI components for each painting that has a product ID.
-     */
-    function setupShopifyUI() {
-        const client = window.ShopifyBuy.buildClient({
-            domain: SHOPIFY_CONFIG.domain,
-            storefrontAccessToken: SHOPIFY_CONFIG.storefrontAccessToken
-        });
-
-        window.ShopifyBuy.UI.onReady(client).then(function (ui) {
-            shopifyUI = ui;
-
-            allPaintings.forEach(painting => {
-                if (painting.shopifyProductId && painting.available) {
-                    createShopifyButton(ui, painting);
-                }
-            });
-        });
-    }
-
-    /**
-     * Create a Shopify Buy Button for a specific painting.
-     */
-    function createShopifyButton(ui, painting) {
-        const containerId = `shopify-${painting.id}`;
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        // Hide the default buy button for this painting
-        const card = container.closest('.art-item');
-        if (card) {
-            const defaultBtn = card.querySelector('.buy-button');
-            if (defaultBtn) defaultBtn.style.display = 'none';
-        }
-
-        ui.createComponent('product', {
-            id: painting.shopifyProductId,
-            node: container,
-            moneyFormat: '%24%7B%7Bamount%7D%7D',
-            options: {
-                product: {
-                    styles: {
-                        product: { 'text-align': 'left' },
-                        button: {
-                            'background-color': '#8B6914',
-                            'font-family': '"Lato", sans-serif',
-                            'font-weight': 'bold',
-                            'font-size': '14px',
-                            'padding-top': '10px',
-                            'padding-bottom': '10px',
-                            ':hover': { 'background-color': '#A37E1A' },
-                            ':focus': { 'background-color': '#A37E1A' }
-                        },
-                        price: { display: 'none' },
-                        title: { display: 'none' }
-                    },
-                    contents: {
-                        img: false,
-                        title: false,
-                        price: false,
-                        button: true
-                    },
-                    text: { button: 'Purchase' }
-                },
-                cart: {
-                    styles: {
-                        button: {
-                            'background-color': '#8B6914',
-                            ':hover': { 'background-color': '#A37E1A' },
-                            ':focus': { 'background-color': '#A37E1A' }
-                        }
-                    },
-                    text: { total: 'Subtotal', button: 'Checkout' }
-                }
-            }
-        });
-    }
-
-    /**
-     * Fallback "Buy Now" handler when Shopify is not yet configured.
-     * Shows a message directing to contact the artist.
+     * "Buy Now" click handler.
+     * If the painting has a Shopify product ID and the SDK is loaded,
+     * fetch the product, create a checkout, and redirect.
+     * Otherwise fall back to email inquiry.
      */
     window.addToCart = function (paintingId) {
-        if (SHOPIFY_CONFIG.enabled && shopifyUI) {
-            // Shopify handles it
+        const painting = allPaintings.find(p => p.id === paintingId);
+        if (!painting) return;
+
+        // Shopify checkout path
+        if (SHOPIFY_CONFIG.enabled && shopifyClient && painting.shopifyProductId) {
+            const btn = document.querySelector(`.buy-button[data-id="${paintingId}"]`);
+            if (btn) { btn.textContent = 'Loading...'; btn.disabled = true; }
+
+            shopifyClient.product.fetch('gid://shopify/Product/' + painting.shopifyProductId)
+                .then(function (product) {
+                    const variantId = product.variants[0].id;
+                    return shopifyClient.checkout.create().then(function (checkout) {
+                        return shopifyClient.checkout.addLineItems(checkout.id, [{
+                            variantId: variantId,
+                            quantity: 1
+                        }]);
+                    });
+                })
+                .then(function (checkout) {
+                    window.location.href = checkout.webUrl;
+                })
+                .catch(function (err) {
+                    console.error('Shopify checkout error:', err);
+                    if (btn) { btn.textContent = 'Buy Now'; btn.disabled = false; }
+                    // Fall back to email
+                    openEmailInquiry(painting);
+                });
             return;
         }
-        // Fallback: direct contact
-        const painting = allPaintings.find(p => p.id === paintingId);
-        if (painting) {
-            const subject = encodeURIComponent(`Inquiry about "${painting.title}"`);
-            const body = encodeURIComponent(
-                `Hello Inesa,\n\nI am interested in purchasing "${painting.title}" (${painting.medium}, ${painting.dimensions}) listed at ${formatPrice(painting.price)}.\n\nPlease let me know how to proceed.\n\nThank you!`
-            );
-            window.location.href = `mailto:contact@inesacole.art?subject=${subject}&body=${body}`;
-        }
+
+        // Fallback: direct contact via email
+        openEmailInquiry(painting);
     };
+
+    /**
+     * Open a pre-filled email to the artist.
+     */
+    function openEmailInquiry(painting) {
+        const subject = encodeURIComponent(`Inquiry about "${painting.title}"`);
+        const body = encodeURIComponent(
+            `Hello Inesa,\n\nI am interested in purchasing "${painting.title}" (${painting.medium}, ${painting.dimensions}) listed at ${formatPrice(painting.price)}.\n\nPlease let me know how to proceed.\n\nThank you!`
+        );
+        window.location.href = `mailto:contact@inesacole.art?subject=${subject}&body=${body}`;
+    }
 
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', init);
