@@ -1,5 +1,6 @@
 /* ============================================================
    Inesa Cole ART - Admin Panel (Vercel Proxy Version)
+   GitHub is the source of truth. localStorage is only an offline cache.
    ============================================================ */
 
 (function () {
@@ -13,7 +14,9 @@
     const ADMIN_PASSWORD = 'inesaart2025';
 
     let paintings = [];
-    let editingId = null; 
+    let paintingsSha = null;          // SHA of data/paintings.json on GitHub
+    let editingId = null;
+    const recentlyUploadedImages = new Map(); // path -> data URL, for immediate preview before Pages rebuilds
 
     const loginScreen = document.getElementById('login-screen');
     const dashboard = document.getElementById('dashboard');
@@ -49,6 +52,19 @@
         return response.json();
     }
 
+    function b64DecodeUnicode(str) {
+        return decodeURIComponent(
+            atob(str.replace(/\n/g, ''))
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+    }
+
+    function b64EncodeUnicode(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+    }
+
     function getFileBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -58,14 +74,22 @@
         });
     }
 
+    function getFileDataURL(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
     function init() {
+        setupEventListeners();
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
             showDashboard();
         } else {
             showLogin();
         }
-        loadPaintings();
-        setupEventListeners();
     }
 
     function setupEventListeners() {
@@ -104,7 +128,8 @@
     function showDashboard() {
         loginScreen.style.display = 'none';
         dashboard.style.display = 'block';
-        renderPaintings();
+        // Always refresh from GitHub when the dashboard appears.
+        loadPaintingsFromGitHub();
     }
 
     function logout() {
@@ -113,30 +138,79 @@
         passwordInput.value = '';
     }
 
-    function loadPaintings() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            paintings = JSON.parse(stored);
-        } else {
-            fetchInitialData();
+    /* ----------------------------------------------------------
+       LOAD: GitHub is the source of truth.
+       localStorage is only used if GitHub is unreachable.
+       ---------------------------------------------------------- */
+    async function loadPaintingsFromGitHub() {
+        if (paintingCount) paintingCount.textContent = 'Loading from GitHub…';
+        if (paintingsGrid) {
+            paintingsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #888;">Syncing with GitHub…</div>';
         }
-    }
-
-    async function fetchInitialData() {
         try {
-            const response = await fetch('data/paintings.json');
-            if (response.ok) {
-                paintings = await response.json();
-                savePaintings();
-                renderPaintings();
-            }
+            const fileInfo = await githubApiRequest('GET', 'data/paintings.json');
+            paintingsSha = fileInfo.sha;
+            const decoded = b64DecodeUnicode(fileInfo.content);
+            paintings = JSON.parse(decoded);
+            saveLocalCache();
+            renderPaintings();
         } catch (err) {
-            paintings = [];
+            console.error('GitHub fetch failed:', err);
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                paintings = JSON.parse(stored);
+                renderPaintings();
+                showToast(`Offline mode — cannot reach GitHub. Showing cached data. (${err.message})`, 'error');
+            } else {
+                paintings = [];
+                renderPaintings();
+                showToast(`Could not load from GitHub: ${err.message}`, 'error');
+            }
         }
     }
 
-    function savePaintings() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(paintings));
+    function saveLocalCache() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(paintings));
+        } catch (err) {
+            // localStorage might be full (base64 images used to blow it up); ignore
+            console.warn('localStorage cache write failed:', err);
+        }
+    }
+
+    /* ----------------------------------------------------------
+       PUSH: write current paintings[] to GitHub.
+       Always re-fetches SHA first to avoid conflicts.
+       ---------------------------------------------------------- */
+    async function pushPaintingsToGitHub(commitMessage) {
+        let currentSha = paintingsSha;
+        try {
+            const fileInfo = await githubApiRequest('GET', 'data/paintings.json');
+            currentSha = fileInfo.sha;
+        } catch (err) {
+            // File may not exist yet — that's fine, we'll create it
+            currentSha = null;
+        }
+
+        // Strip any transient fields before persisting
+        const cleanPaintings = paintings.map(p => {
+            const out = { ...p };
+            delete out.imageData;
+            return out;
+        });
+
+        const jsonContent = b64EncodeUnicode(JSON.stringify(cleanPaintings, null, 2));
+        const putBody = {
+            message: commitMessage,
+            content: jsonContent
+        };
+        if (currentSha) putBody.sha = currentSha;
+
+        const result = await githubApiRequest('PUT', 'data/paintings.json', putBody);
+        if (result && result.content && result.content.sha) {
+            paintingsSha = result.content.sha;
+        }
+        saveLocalCache();
     }
 
     function renderPaintings() {
@@ -159,8 +233,11 @@
             const statusClass = painting.available ? 'available' : 'sold';
             const statusText = painting.available ? 'Available' : 'Sold';
             const imageUrl = painting.image || '';
-            const imgTag = imageUrl
-                ? `<img src="${sanitize(imageUrl)}" alt="${sanitize(painting.title)}">`
+            // Use in-memory data URL for freshly uploaded images so they display
+            // before GitHub Pages has rebuilt. Fall back to path.
+            const displayUrl = recentlyUploadedImages.get(imageUrl) || imageUrl;
+            const imgTag = displayUrl
+                ? `<img src="${sanitize(displayUrl)}" alt="${sanitize(painting.title)}" onerror="this.style.display='none'; this.nextElementSibling && (this.nextElementSibling.style.display='flex');"><div style="display:none;height:200px;background:#eee;align-items:center;justify-content:center;color:#aaa;">Image building on GitHub Pages…</div>`
                 : '<div style="height:200px;background:#eee;display:flex;align-items:center;justify-content:center;color:#aaa;">No Image</div>';
 
             return `
@@ -222,7 +299,7 @@
         document.getElementById('painting-shopify-id').value = painting.shopifyProductId || '';
         imageUrlInput.value = painting.image || '';
 
-        const imgSrc = painting.image;
+        const imgSrc = recentlyUploadedImages.get(painting.image) || painting.image;
         if (imgSrc) {
             imagePreview.src = imgSrc;
             imagePreview.style.display = 'block';
@@ -236,8 +313,11 @@
 
         const submitBtn = e.target.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.textContent;
-        submitBtn.textContent = 'Загрузка на GitHub...';
+        submitBtn.textContent = 'Uploading to GitHub…';
         submitBtn.disabled = true;
+
+        // Snapshot for rollback if GitHub write fails
+        const snapshot = JSON.parse(JSON.stringify(paintings));
 
         try {
             const title = document.getElementById('painting-title').value.trim();
@@ -248,30 +328,36 @@
             const description = document.getElementById('painting-description').value.trim();
             const available = document.getElementById('painting-available').checked;
             const shopifyProductId = document.getElementById('painting-shopify-id').value.trim();
-            
+
             let finalImageUrl = imageUrlInput.value.trim();
+            let freshDataUrl = null;
 
             if (!title) {
                 showToast('Please enter a painting title.', 'error');
                 return;
             }
 
-            // Грузим картинку на GitHub если она выбрана
+            // Upload image to GitHub if a new file was picked
             if (imageInput.files && imageInput.files[0]) {
                 const file = imageInput.files[0];
-                const base64Content = await getFileBase64(file);
+                const dataURL = await getFileDataURL(file);
+                const base64Content = dataURL.split(',')[1];
                 const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
                 const imagePath = `images/${Date.now()}-${safeName}`;
-                
+
+                submitBtn.textContent = 'Uploading image…';
                 await githubApiRequest('PUT', imagePath, {
                     message: `Upload image: ${title}`,
                     content: base64Content
                 });
-                
-                finalImageUrl = imagePath; 
+
+                finalImageUrl = imagePath;
+                freshDataUrl = dataURL;
+                // Keep a data-URL fallback so the card renders immediately,
+                // before GitHub Pages has rebuilt the site.
+                recentlyUploadedImages.set(imagePath, dataURL);
             }
 
-            // Обновляем массив
             if (editingId) {
                 const index = paintings.findIndex(p => p.id === editingId);
                 if (index !== -1) {
@@ -279,7 +365,6 @@
                         ...paintings[index],
                         title, medium, dimensions, price, year, description, available, shopifyProductId,
                         image: finalImageUrl || paintings[index].image,
-                        imageData: null, // УБРАЛИ BASE64 ИЗ ПАМЯТИ
                         alt: title
                     };
                 }
@@ -288,38 +373,25 @@
                     id: 'painting-' + Date.now(),
                     title, medium, dimensions, price, year, description, available, shopifyProductId,
                     image: finalImageUrl,
-                    imageData: null, // УБРАЛИ BASE64 ИЗ ПАМЯТИ
                     alt: title,
                     featured: false
                 });
             }
 
-            savePaintings();
+            // Push JSON to GitHub. If this throws, we roll back in catch.
+            submitBtn.textContent = 'Updating database…';
+            await pushPaintingsToGitHub(`Update gallery: ${title}`);
+
             renderPaintings();
-
-            // Сохраняем JSON на GitHub
-            submitBtn.textContent = 'Обновление базы...';
-            let currentSha = null;
-            try {
-                const fileInfo = await githubApiRequest('GET', 'data/paintings.json');
-                currentSha = fileInfo.sha;
-            } catch (err) {
-                console.log("File json doesn't exist yet.");
-            }
-
-            const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(paintings, null, 2))));
-            await githubApiRequest('PUT', 'data/paintings.json', {
-                message: `Update gallery: ${title}`,
-                content: jsonContent,
-                sha: currentSha || undefined
-            });
-
-            showToast('Готово! Сохранено на GitHub!', 'success');
+            showToast('Saved to GitHub!', 'success');
             closeModal();
-            
+
         } catch (error) {
             console.error(error);
-            showToast(`Ошибка: ${error.message}`, 'error');
+            // Roll back in-memory state so the UI matches reality
+            paintings = snapshot;
+            renderPaintings();
+            showToast(`Error: ${error.message}`, 'error');
         } finally {
             submitBtn.textContent = originalBtnText;
             submitBtn.disabled = false;
@@ -340,11 +412,20 @@
 
     async function toggleAvailability(id) {
         const painting = paintings.find(p => p.id === id);
-        if (painting) {
-            painting.available = !painting.available;
-            savePaintings();
+        if (!painting) return;
+
+        const originalValue = painting.available;
+        painting.available = !painting.available;
+        renderPaintings();
+
+        try {
+            await pushPaintingsToGitHub(`Toggle availability: ${painting.title} → ${painting.available ? 'Available' : 'Sold'}`);
+            showToast(`"${painting.title}" — ${painting.available ? 'Available' : 'Sold'} saved to GitHub.`, 'success');
+        } catch (err) {
+            // Roll back
+            painting.available = originalValue;
             renderPaintings();
-            showToast(`"${painting.title}" updated. Please open it and click "Save Painting" to push to GitHub.`, 'success');
+            showToast(`Failed to save to GitHub: ${err.message}`, 'error');
         }
     }
 
@@ -352,11 +433,20 @@
         const painting = paintings.find(p => p.id === id);
         if (!painting) return;
 
-        if (confirm(`Are you sure you want to delete "${painting.title}"?`)) {
-            paintings = paintings.filter(p => p.id !== id);
-            savePaintings();
+        if (!confirm(`Are you sure you want to delete "${painting.title}"? This cannot be undone.`)) return;
+
+        const snapshot = JSON.parse(JSON.stringify(paintings));
+        paintings = paintings.filter(p => p.id !== id);
+        renderPaintings();
+
+        try {
+            await pushPaintingsToGitHub(`Delete painting: ${painting.title}`);
+            showToast(`"${painting.title}" deleted from GitHub.`, 'success');
+        } catch (err) {
+            // Roll back
+            paintings = snapshot;
             renderPaintings();
-            showToast(`Deleted. Open any painting and click "Save" to push changes to GitHub.`, 'success');
+            showToast(`Failed to delete from GitHub: ${err.message}`, 'error');
         }
     }
 
@@ -381,13 +471,20 @@
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function (event) {
+            reader.onload = async function (event) {
                 try {
                     const imported = JSON.parse(event.target.result);
-                    if (confirm(`Replace all paintings?`)) {
-                        paintings = imported;
-                        savePaintings();
+                    if (!confirm(`Replace all paintings with imported data and push to GitHub?`)) return;
+                    const snapshot = JSON.parse(JSON.stringify(paintings));
+                    paintings = imported;
+                    renderPaintings();
+                    try {
+                        await pushPaintingsToGitHub(`Import paintings from backup file`);
+                        showToast('Imported and saved to GitHub.', 'success');
+                    } catch (err) {
+                        paintings = snapshot;
                         renderPaintings();
+                        showToast(`Import failed to push to GitHub: ${err.message}`, 'error');
                     }
                 } catch (err) {
                     showToast('Error reading file.', 'error');
@@ -396,6 +493,19 @@
             reader.readAsText(file);
         };
         input.click();
+    }
+
+    async function refreshFromGitHub() {
+        showToast('Refreshing from GitHub…', 'success');
+        await loadPaintingsFromGitHub();
+    }
+
+    function clearLocalCache() {
+        if (!confirm('Clear the local browser cache? (Does not affect GitHub — next load will re-sync.)')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        recentlyUploadedImages.clear();
+        showToast('Local cache cleared. Refreshing…', 'success');
+        loadPaintingsFromGitHub();
     }
 
     function sanitize(str) {
@@ -420,7 +530,9 @@
     }
 
     window.adminApp = {
-        openAddForm, editPainting, toggleAvailability, deletePainting, exportData, importData, closeModal, logout
+        openAddForm, editPainting, toggleAvailability, deletePainting,
+        exportData, importData, closeModal, logout,
+        refreshFromGitHub, clearLocalCache
     };
 
     document.addEventListener('DOMContentLoaded', init);
