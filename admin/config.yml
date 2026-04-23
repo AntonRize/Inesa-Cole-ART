@@ -1,0 +1,32 @@
+backend:
+  name: github
+  repo: ТВОЙ_ЛОГИН/ТВОЙ_РЕПОЗИТОРИЙ # ЗАМЕНИ НА СВОИ ДАННЫЕ (например: AntonRize/Inesa-Cole-ART)
+  branch: main # или master, проверь в репозитории
+  pkce: true # Авторизация без бэкенда!
+  app_id: СЮДА_ВСТАВИМ_CLIENT_ID # Получим на Шаге 2
+
+media_folder: "images" # Папка в репозитории, куда будут сохраняться картинки
+public_folder: "images" # Путь, который будет подставляться в JSON
+
+collections:
+  - name: "gallery"
+    label: "Управление Галереей"
+    files:
+      - label: "Список Картин"
+        name: "paintings_data"
+        file: "data/paintings.json"
+        fields:
+          - label: "Картины"
+            name: "paintings"
+            widget: "list"
+            fields:
+              - {label: "ID", name: "id", widget: "string", hint: "Например: painting-004"}
+              - {label: "Название (Title)", name: "title", widget: "string"}
+              - {label: "Материалы (Medium)", name: "medium", widget: "string", default: "Oil on canvas"}
+              - {label: "Размер (Dimensions)", name: "dimensions", widget: "string", hint: "Например: 80x80 cm"}
+              - {label: "Цена в $ (Price)", name: "price", widget: "number", value_type: "int"}
+              - {label: "Фото (Image)", name: "image", widget: "image"}
+              - {label: "Описание (Description)", name: "description", widget: "text", required: false}
+              - {label: "В наличии (Available)", name: "available", widget: "boolean", default: true}
+              - {label: "Год (Year)", name: "year", widget: "number", value_type: "int"}
+              - {label: "Shopify Product ID", name: "shopifyProductId", widget: "string", required: false}
