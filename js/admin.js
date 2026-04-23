@@ -6,7 +6,7 @@
     'use strict';
 
     // Vercel proxy keeps the GitHub token server-side and secret
-    const PROXY_URL = 'https://inesa-cole-proxy-gph2qjpbk-antons-projects-75954737.vercel.app';
+    const PROXY_URL = 'https://inesa-cole-proxy.vercel.app';
 
     const STORAGE_KEY = 'inesacole_paintings';
     const AUTH_KEY = 'inesacole_admin_auth';
