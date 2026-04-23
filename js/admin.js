@@ -38,7 +38,7 @@
     async function githubApiRequest(method, path, body = null) {
         const response = await fetch(`${PROXY_URL}/api/github-proxy`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify({ password: ADMIN_PASSWORD, method, path, body })
         });
 
