@@ -40,5 +40,20 @@
     "featured": true,
     "year": 2025,
     "shopifyProductId": "10171475788089"
+  },
+  {
+    "id": "painting-1776940766619",
+    "title": "hkj",
+    "medium": "",
+    "dimensions": "",
+    "price": 0,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1776940764365-BCD.jpeg",
+    "imageData": null,
+    "alt": "hkj",
+    "featured": false
   }
 ]
