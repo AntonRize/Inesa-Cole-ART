@@ -5,12 +5,8 @@
 (function () {
     'use strict';
 
-    /* ----------------------------------------------------------
-       REPLACE with your actual Vercel deployed URL
-       Find it at: vercel.com → your proxy project → Domains tab
-       Example: https://proxy-eta-ten.vercel.app
-       ---------------------------------------------------------- */
-    const PROXY_URL = 'https://proxy-brqp9hn9z-antons-projects-75954737.vercel.app';
+    // Vercel proxy keeps the GitHub token server-side and secret
+    const PROXY_URL = 'https://inesa-cole-proxy-gph2qjpbk-antons-projects-75954737.vercel.app';
 
     const STORAGE_KEY = 'inesacole_paintings';
     const AUTH_KEY = 'inesacole_admin_auth';
@@ -37,17 +33,13 @@
 
     /* ----------------------------------------------------------
        GITHUB VIA VERCEL PROXY
-       All GitHub API calls go through the server-side proxy so
-       Inesa never needs to enter a GitHub token.
+       The token lives only in Vercel env vars — never in this file.
        ---------------------------------------------------------- */
     async function githubApiRequest(method, path, body = null) {
-        const password = sessionStorage.getItem('admin_password');
-        if (!password) throw new Error("Session expired. Please log in again.");
-
         const response = await fetch(`${PROXY_URL}/api/github-proxy`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password, method, path, body })
+            body: JSON.stringify({ password: ADMIN_PASSWORD, method, path, body })
         });
 
         if (!response.ok) {
@@ -94,7 +86,6 @@
 
         if (password === ADMIN_PASSWORD) {
             sessionStorage.setItem(AUTH_KEY, 'true');
-            sessionStorage.setItem('admin_password', password);
             showDashboard();
             loginError.style.display = 'none';
         } else {
@@ -118,7 +109,6 @@
 
     function logout() {
         sessionStorage.removeItem(AUTH_KEY);
-        sessionStorage.removeItem('admin_password');
         showLogin();
         passwordInput.value = '';
     }
