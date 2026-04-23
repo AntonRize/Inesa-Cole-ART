@@ -1,0 +1,149 @@
+
+
+---
+
+## Project Technical Brief: inesacole.art Admin Upload
+
+### What the site is
+- **URL:** https://inesacole.art
+- **Hosting:** GitHub Pages, served from the `main` branch of the public repo `AntonRize/Inesa-Cole-ART`
+- **Stack:** Pure static HTML/CSS/JS — no build step, no framework
+- **Paintings data:** stored in `data/paintings.json` in the repo
+- **Images:** stored in the `images/` folder in the repo
+
+### What the admin does
+- Page: `https://inesacole.art/admin`
+- Password protected (hardcoded in `js/admin.js`: `inesaart2025`)
+- Inesa fills a form, picks an image file, clicks Save
+- JS converts image to base64, calls GitHub Contents API to upload image to `images/`, then updates `data/paintings.json`
+- GitHub Pages auto-serves the updated files within seconds
+
+### Why it can't call GitHub directly from the browser
+The GitHub token must be kept secret. It cannot live in `js/admin.js` because that file is in a **public** GitHub repo — anyone can read it.
+
+### The proxy architecture (what has been built)
+A separate Vercel project (`inesa-cole-proxy`) acts as a middleman:
+
+```
+Browser (inesacole.art/admin)
+  → POST to Vercel proxy /api/github-proxy
+    → Vercel reads GITHUB_TOKEN_Inesa from env vars
+      → Calls GitHub API
+        → Returns result to browser
+```
+
+### Current state of each file
+
+**`js/admin.js` (in `AntonRize/Inesa-Cole-ART` repo) — CORRECT, already pushed:**
+```js
+const PROXY_URL = 'https://inesa-cole-proxy-gph2qjpbk-antons-projects-75954737.vercel.app';
+
+async function githubApiRequest(method, path, body = null) {
+    const response = await fetch(`${PROXY_URL}/api/github-proxy`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },  // text/plain avoids CORS preflight
+        body: JSON.stringify({ password: ADMIN_PASSWORD, method, path, body })
+    });
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(`GitHub Error: ${response.status} - ${errData.message || errData.error || 'Unknown error'}`);
+    }
+    return response.json();
+}
+```
+
+**`api/github-proxy.js` (in the `inesa-cole-proxy` Vercel repo) — CORRECT code, but may be misconfigured in Vercel:**
+```js
+const GITHUB_OWNER = 'AntonRize';
+const GITHUB_REPO  = 'Inesa-Cole-ART';
+
+module.exports = async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');  // MUST be first line
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    let data;
+    try {
+        const chunks = [];
+        for await (const chunk of req) chunks.push(chunk);
+        const raw = Buffer.concat(chunks).toString();
+        data = JSON.parse(raw);
+    } catch {
+        return res.status(400).json({ error: 'Bad request body' });
+    }
+
+    const { password, method, path, body } = data || {};
+
+    if (!password || password !== process.env.ADMIN_PASSWORD) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    if (!method || !path) {
+        return res.status(400).json({ error: 'Missing method or path' });
+    }
+
+    const token = process.env.GITHUB_TOKEN_Inesa;
+    if (!token) {
+        return res.status(500).json({ error: 'Server misconfiguration: token missing' });
+    }
+
+    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
+    const options = {
+        method,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'User-Agent': 'inesacole-proxy',
+        },
+    };
+    if (body && method !== 'GET') {
+        options.body = JSON.stringify(body);
+    }
+
+    try {
+        const ghRes = await fetch(url, options);
+        const result = await ghRes.json();
+        return res.status(ghRes.status).json(result);
+    } catch (err) {
+        return res.status(502).json({ error: 'GitHub unreachable', detail: err.message });
+    }
+};
+```
+
+### The exact current error
+```
+Access to fetch at 'https://inesa-cole-proxy-gph2qjpbk-antons-projects-75954737.vercel.app/api/github-proxy'
+from origin 'https://inesacole.art' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+The response from the Vercel function is missing the `Access-Control-Allow-Origin: *` header entirely — despite the function code setting it as the first line. This means **the function code is not what is actually being served**, or the Vercel project's root directory is misconfigured.
+
+### Most likely root cause
+The file on disk is at:
+```
+C:\Users\Anton\Documents\GitHub\inesa-cole-proxy\inesa-proxy\api\github-proxy.js
+```
+
+The repo is `inesa-cole-proxy`. Inside it there is a subfolder `inesa-proxy`, then `api/github-proxy.js`. **If Vercel's "Root Directory" setting for this project is set to the repo root `/` instead of `inesa-proxy/`, Vercel will not find the function.** It will return an error response without any CORS headers.
+
+### What needs to be verified/fixed
+
+1. **Vercel project root directory** — Go to vercel.com → `inesa-cole-proxy` project → Settings → General → **Root Directory**. It must be set to `inesa-proxy`. If it is blank or `/`, the function is invisible to Vercel.
+
+2. **Environment variables** — In the same project → Settings → Environment Variables, confirm both exist:
+   - `ADMIN_PASSWORD` = `inesaart2025`
+   - `GITHUB_TOKEN_Inesa` = a GitHub fine-grained PAT with **Contents: Read and Write** on `AntonRize/Inesa-Cole-ART` only
+
+3. **After fixing root directory** — redeploy the project (Vercel → Deployments → Redeploy). Then test by visiting `https://inesa-cole-proxy-gph2qjpbk-antons-projects-75954737.vercel.app/api/github-proxy` directly in a browser — it should return `{"error":"Method not allowed"}`. If it returns a Vercel 404 page, the root directory is still wrong.
+
+4. **The `js/admin.js` in the main repo** — already correct, already pushed. No changes needed there.
+
+### GitHub PAT requirements
+- Type: Fine-grained personal access token
+- Repository access: `AntonRize/Inesa-Cole-ART` only
+- Permissions: Repository permissions → **Contents: Read and Write**
+- Everything else: No access
