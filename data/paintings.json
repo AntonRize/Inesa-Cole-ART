@@ -152,5 +152,19 @@
     "image": "images/1777036015383-20260410_110615.jpg",
     "alt": "Back to Childhood",
     "featured": false
+  },
+  {
+    "id": "painting-1777036149486",
+    "title": "Lonely Boat",
+    "medium": "Mixed media",
+    "dimensions": "118cm (W)x 80 cm (H)",
+    "price": 470,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777036145370-20260413_115102.jpg",
+    "alt": "Lonely Boat",
+    "featured": false
   }
 ]
