@@ -1,37 +1,31 @@
 /* ============================================================
    Inesa Cole ART - Shared Site JavaScript
+   ------------------------------------------------------------
+   GitHub (data/paintings.json) is the single source of truth.
+   No localStorage is read on public pages — that avoids the
+   "different devices show different versions" desync.
    ============================================================ */
 
 /**
- * Load paintings data from the JSON file.
- * Returns a promise that resolves to the array of paintings.
+ * Load paintings from data/paintings.json on GitHub Pages.
+ * Cache-busts with a timestamp query string so browsers and
+ * CDNs can't serve a stale version between devices.
+ *
+ * Returns an array (possibly empty). Never throws.
  */
 async function loadPaintings() {
+    const url = 'data/paintings.json?v=' + Date.now();
     try {
-        const response = await fetch('data/paintings.json');
-        if (!response.ok) throw new Error('Failed to load paintings data');
-        return await response.json();
-    } catch (error) {
-        console.error('Error loading paintings:', error);
-        // Fall back to localStorage if JSON fetch fails
-        const stored = localStorage.getItem('inesacole_paintings');
-        if (stored) {
-            return JSON.parse(stored);
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status);
         }
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+    } catch (err) {
+        console.error('loadPaintings failed:', err);
         return [];
     }
-}
-
-/**
- * Get paintings from localStorage (admin-managed data takes priority).
- * If admin has saved data, use that. Otherwise fall back to JSON file.
- */
-async function getPaintings() {
-    const adminData = localStorage.getItem('inesacole_paintings');
-    if (adminData) {
-        return JSON.parse(adminData);
-    }
-    return await loadPaintings();
 }
 
 /**
@@ -39,13 +33,6 @@ async function getPaintings() {
  */
 function formatPrice(price) {
     return '$' + Number(price).toLocaleString('en-US');
-}
-
-/**
- * Generate a simple unique ID.
- */
-function generateId() {
-    return 'painting-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6);
 }
 
 /**

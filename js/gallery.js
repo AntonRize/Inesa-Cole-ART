@@ -35,7 +35,7 @@
      */
     async function init() {
         showLoading();
-        allPaintings = await getPaintings();
+        allPaintings = await loadPaintings();
         renderGallery(allPaintings);
         setupFilters();
         if (SHOPIFY_CONFIG.enabled) {
