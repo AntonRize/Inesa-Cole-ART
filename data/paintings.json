@@ -52,7 +52,6 @@
     "available": true,
     "shopifyProductId": "",
     "image": "images/1777028622709-20250314_151647.jpg",
-    "imageData": null,
     "alt": "Moonlight",
     "featured": false
   },
@@ -67,23 +66,7 @@
     "available": true,
     "shopifyProductId": "",
     "image": "images/1777028911854-20251204_132720.jpg",
-    "imageData": null,
     "alt": "Meadow",
-    "featured": false
-  },
-  {
-    "id": "painting-1777030343933",
-    "title": "sdfsf",
-    "medium": "",
-    "dimensions": "",
-    "price": 0,
-    "year": "",
-    "description": "",
-    "available": true,
-    "shopifyProductId": "",
-    "image": "images/1777030341544-BCD.jpeg",
-    "imageData": null,
-    "alt": "sdfsf",
     "featured": false
   },
   {
@@ -97,7 +80,6 @@
     "available": true,
     "shopifyProductId": "",
     "image": "images/1777030651584-Im.jpeg",
-    "imageData": null,
     "alt": "ssfsfsg",
     "featured": false
   },
@@ -112,7 +94,6 @@
     "available": true,
     "shopifyProductId": "",
     "image": "images/1777030676099-Scd.jpeg",
-    "imageData": null,
     "alt": "aaffa",
     "featured": false
   }
