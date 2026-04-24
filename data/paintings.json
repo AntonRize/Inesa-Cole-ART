@@ -55,5 +55,20 @@
     "imageData": null,
     "alt": "Moonlight",
     "featured": false
+  },
+  {
+    "id": "painting-1777028919467",
+    "title": "Meadow",
+    "medium": "Acrylic on canvas",
+    "dimensions": "90cm (W)x 60 cm ( H )",
+    "price": 400,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777028911854-20251204_132720.jpg",
+    "imageData": null,
+    "alt": "Meadow",
+    "featured": false
   }
 ]
