@@ -68,5 +68,19 @@
     "image": "images/1777028911854-20251204_132720.jpg",
     "alt": "Meadow",
     "featured": false
+  },
+  {
+    "id": "painting-1777033896490",
+    "title": "Old Wallpapers",
+    "medium": "Mixed media",
+    "dimensions": "76cm (W) x 76cm (H)",
+    "price": 250,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777033885544-20260304_092101.jpg",
+    "alt": "Old Wallpapers",
+    "featured": false
   }
 ]
