@@ -166,5 +166,19 @@
     "image": "images/1777036145370-20260413_115102.jpg",
     "alt": "Lonely Boat",
     "featured": false
+  },
+  {
+    "id": "painting-1777036253289",
+    "title": "In the Mountains",
+    "medium": "Acrylic on canvas",
+    "dimensions": "60cm (W) x 54cm (H)",
+    "price": 200,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777036249465-20260304_092320.jpg",
+    "alt": "In the Mountains",
+    "featured": false
   }
 ]
