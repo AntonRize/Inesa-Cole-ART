@@ -194,5 +194,19 @@
     "image": "images/1777036386843-Green_Mpont_Beach.jpg",
     "alt": "Green mount Beach",
     "featured": false
+  },
+  {
+    "id": "painting-1777037227799",
+    "title": "Sun-Dappled Dreams",
+    "medium": "",
+    "dimensions": "122cm (W) x 60cm (H)",
+    "price": 480,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777037222785-20260424_165016.jpg",
+    "alt": "Sun-Dappled Dreams",
+    "featured": false
   }
 ]
