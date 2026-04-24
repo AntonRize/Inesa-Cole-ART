@@ -110,5 +110,19 @@
     "image": "images/1777035466185-FB_IMG_1773131479349.jpg",
     "alt": "Ukrainian Sunflower",
     "featured": false
+  },
+  {
+    "id": "painting-1777035793181",
+    "title": "Forest Tranquility",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40cm(W) x40 cm (H)",
+    "price": 200,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777035787750-20260321_131341.jpg",
+    "alt": "Forest Tranquility",
+    "featured": false
   }
 ]
