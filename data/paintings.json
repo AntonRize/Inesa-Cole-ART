@@ -124,5 +124,19 @@
     "image": "images/1777035787750-20260321_131341.jpg",
     "alt": "Forest Tranquility",
     "featured": false
+  },
+  {
+    "id": "painting-1777035922272",
+    "title": "Serenity",
+    "medium": "Acrylic on canvas",
+    "dimensions": "56cm (W) x 56cm (H)",
+    "price": 230,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777035917005-20260319_153601.jpg",
+    "alt": "Serenity",
+    "featured": false
   }
 ]
