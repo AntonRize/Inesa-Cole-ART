@@ -138,5 +138,19 @@
     "image": "images/1777035917005-20260319_153601.jpg",
     "alt": "Serenity",
     "featured": false
+  },
+  {
+    "id": "painting-1777036021210",
+    "title": "Back to Childhood",
+    "medium": "Acrylic on canvas",
+    "dimensions": "58cm (W) x 58cm (H)",
+    "price": 240,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777036015383-20260410_110615.jpg",
+    "alt": "Back to Childhood",
+    "featured": false
   }
 ]
