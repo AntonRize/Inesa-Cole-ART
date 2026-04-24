@@ -100,5 +100,20 @@
     "imageData": null,
     "alt": "ssfsfsg",
     "featured": false
+  },
+  {
+    "id": "painting-1777030677492",
+    "title": "aaffa",
+    "medium": "",
+    "dimensions": "",
+    "price": 0,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777030676099-Scd.jpeg",
+    "imageData": null,
+    "alt": "aaffa",
+    "featured": false
   }
 ]
