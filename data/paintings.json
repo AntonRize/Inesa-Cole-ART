@@ -85,5 +85,20 @@
     "imageData": null,
     "alt": "sdfsf",
     "featured": false
+  },
+  {
+    "id": "painting-1777030653091",
+    "title": "ssfsfsg",
+    "medium": "",
+    "dimensions": "",
+    "price": 0,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777030651584-Im.jpeg",
+    "imageData": null,
+    "alt": "ssfsfsg",
+    "featured": false
   }
 ]
