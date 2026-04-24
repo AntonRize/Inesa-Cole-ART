@@ -180,5 +180,19 @@
     "image": "images/1777036249465-20260304_092320.jpg",
     "alt": "In the Mountains",
     "featured": false
+  },
+  {
+    "id": "painting-1777036391502",
+    "title": "Green mount Beach",
+    "medium": "Acrylic on canvas",
+    "dimensions": "50 cm (W) x 60 cm (H)",
+    "price": 250,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777036386843-Green_Mpont_Beach.jpg",
+    "alt": "Green mount Beach",
+    "featured": false
   }
 ]
