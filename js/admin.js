@@ -83,6 +83,57 @@
         });
     }
 
+    function blobToDataURL(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    /**
+     * Resize an image file to at most `maxSize` pixels on its longest side,
+     * re-encode as JPEG at the given quality, and return a Blob.
+     *
+     * Why: Vercel serverless functions reject bodies over ~4.5 MB with HTTP 413.
+     * Modern phone photos (3-6 MB) blow past that once base64-encoded and
+     * JSON-wrapped. Resizing client-side yields ~300KB-1.5MB outputs — safe
+     * for the proxy and fast for gallery visitors.
+     *
+     * `imageOrientation: 'from-image'` makes createImageBitmap honor the EXIF
+     * Orientation tag, so portrait photos don't arrive sideways.
+     */
+    async function resizeImage(file, maxSize = 2000, quality = 0.85) {
+        const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+        let { width, height } = bitmap;
+
+        if (Math.max(width, height) > maxSize) {
+            if (width >= height) {
+                height = Math.round((height / width) * maxSize);
+                width = maxSize;
+            } else {
+                width = Math.round((width / height) * maxSize);
+                height = maxSize;
+            }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(bitmap, 0, 0, width, height);
+        bitmap.close && bitmap.close();
+
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(
+                (blob) => blob ? resolve(blob) : reject(new Error('Image encoding failed')),
+                'image/jpeg',
+                quality
+            );
+        });
+    }
+
     function init() {
         setupEventListeners();
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
@@ -337,15 +388,25 @@
                 return;
             }
 
-            // Upload image to GitHub if a new file was picked
+            // Upload image to GitHub if a new file was picked.
+            // Resize before upload to stay under Vercel's ~4.5 MB proxy limit
+            // and to keep the gallery lightweight for visitors.
             if (imageInput.files && imageInput.files[0]) {
-                const file = imageInput.files[0];
-                const dataURL = await getFileDataURL(file);
-                const base64Content = dataURL.split(',')[1];
-                const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-                const imagePath = `images/${Date.now()}-${safeName}`;
+                const rawFile = imageInput.files[0];
 
-                submitBtn.textContent = 'Uploading image…';
+                submitBtn.textContent = 'Resizing image…';
+                const resizedBlob = await resizeImage(rawFile, 2000, 0.85);
+
+                const dataURL = await blobToDataURL(resizedBlob);
+                const base64Content = dataURL.split(',')[1];
+
+                // Always save as .jpg since resizeImage re-encodes to JPEG
+                const baseName = rawFile.name
+                    .replace(/\.[^.]+$/, '')
+                    .replace(/[^a-zA-Z0-9.-]/g, '_') || 'photo';
+                const imagePath = `images/${Date.now()}-${baseName}.jpg`;
+
+                submitBtn.textContent = `Uploading (${Math.round(resizedBlob.size / 1024)} KB)…`;
                 await githubApiRequest('PUT', imagePath, {
                     message: `Upload image: ${title}`,
                     content: base64Content
