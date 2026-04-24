@@ -82,5 +82,19 @@
     "image": "images/1777033885544-20260304_092101.jpg",
     "alt": "Old Wallpapers",
     "featured": false
+  },
+  {
+    "id": "painting-1777035258244",
+    "title": "The smell of Autumn",
+    "medium": "Acryl on canvas",
+    "dimensions": "60cm (W)x 50 cm (H)",
+    "price": 200,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777035253163-FB_IMG_1773131560956.jpg",
+    "alt": "The smell of Autumn",
+    "featured": false
   }
 ]
