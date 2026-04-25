@@ -278,5 +278,19 @@
     "image": "images/1777078815214-April.jpg",
     "alt": "Early April",
     "featured": false
+  },
+  {
+    "id": "painting-1777078919943",
+    "title": "Between the rocks",
+    "medium": "Mixed media",
+    "dimensions": "50 cm (W) x 40 cm (H)",
+    "price": 170,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777078917566-20260321_131412.jpg",
+    "alt": "Between the rocks",
+    "featured": false
   }
 ]
