@@ -264,5 +264,19 @@
     "image": "images/1777078691212-20251111_152532.jpg",
     "alt": "The window",
     "featured": false
+  },
+  {
+    "id": "painting-1777078819285",
+    "title": "Early April",
+    "medium": "Mixed media",
+    "dimensions": "40 cm (W) x 50 cm (H)",
+    "price": 190,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777078815214-April.jpg",
+    "alt": "Early April",
+    "featured": false
   }
 ]
