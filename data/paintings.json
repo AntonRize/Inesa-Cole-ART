@@ -236,5 +236,19 @@
     "image": "images/1777077689889-20260425_103113.jpg",
     "alt": "Foggy Memories",
     "featured": false
+  },
+  {
+    "id": "painting-1777077940884",
+    "title": "Frozen in time",
+    "medium": "Mixed media",
+    "dimensions": "50cm (W)x 40 cm (H)",
+    "price": 215,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777077937876-20260304_092458.jpg",
+    "alt": "Frozen in time",
+    "featured": false
   }
 ]
