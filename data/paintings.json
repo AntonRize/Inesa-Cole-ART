@@ -250,5 +250,19 @@
     "image": "images/1777077937876-20260304_092458.jpg",
     "alt": "Frozen in time",
     "featured": false
+  },
+  {
+    "id": "painting-1777078694765",
+    "title": "The window",
+    "medium": "Mixed media",
+    "dimensions": "122cm (W) x 82.5cm (H)",
+    "price": 300,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777078691212-20251111_152532.jpg",
+    "alt": "The window",
+    "featured": false
   }
 ]
