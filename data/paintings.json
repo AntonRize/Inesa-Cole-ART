@@ -208,5 +208,19 @@
     "image": "images/1777037222785-20260424_165016.jpg",
     "alt": "Sun-Dappled Dreams",
     "featured": false
+  },
+  {
+    "id": "painting-1777077609335",
+    "title": "Rainy Day",
+    "medium": "Acrylic on canvas",
+    "dimensions": "76cm (W) x 38cm (H)",
+    "price": 210,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777077605808-20260425_100802.jpg",
+    "alt": "Rainy Day",
+    "featured": false
   }
 ]
