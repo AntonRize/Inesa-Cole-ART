@@ -292,5 +292,19 @@
     "image": "images/1777078917566-20260321_131412.jpg",
     "alt": "Between the rocks",
     "featured": false
+  },
+  {
+    "id": "painting-1777079027470",
+    "title": "Secret Gardens",
+    "medium": "Acrylic on canvas",
+    "dimensions": "50 cm (W) x 40 cm (H)",
+    "price": 164,
+    "year": "2025",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777079024134-20260205_145521.jpg",
+    "alt": "Secret Gardens",
+    "featured": false
   }
 ]
