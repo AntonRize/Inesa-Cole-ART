@@ -222,5 +222,19 @@
     "image": "images/1777077605808-20260425_100802.jpg",
     "alt": "Rainy Day",
     "featured": false
+  },
+  {
+    "id": "painting-1777077692352",
+    "title": "Foggy Memories",
+    "medium": "Acrylic on canvas",
+    "dimensions": "60cm (W)x 91cm (H)",
+    "price": 260,
+    "year": "",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1777077689889-20260425_103113.jpg",
+    "alt": "Foggy Memories",
+    "featured": false
   }
 ]
