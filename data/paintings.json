@@ -1,12 +1,12 @@
 [
   {
     "id": "painting-001",
-    "title": "Windmill's Morning",
+    "title": "Windmil's Morning",
     "medium": "Acryl on canvas, mixed media",
     "dimensions": "105x105",
     "price": 360,
     "image": "images/windmill-field.jpg",
-    "alt": "Windmill's Morning",
+    "alt": "Windmil's Morning",
     "description": "A vibrant landscape featuring a traditional windmill surrounded by blooming wildflowers. Rich textures bring the countryside scene to life.",
     "available": true,
     "featured": true,
@@ -204,7 +204,7 @@
     "year": "2025",
     "description": "",
     "available": true,
-    "shopifyProductId": "10189503267129",
+    "shopifyProductId": "",
     "image": "images/1777037222785-20260424_165016.jpg",
     "alt": "Sun-Dappled Dreams",
     "featured": false
@@ -218,7 +218,7 @@
     "year": "2025",
     "description": "",
     "available": true,
-    "shopifyProductId": "10189504151865",
+    "shopifyProductId": "",
     "image": "images/1777077605808-20260425_100802.jpg",
     "alt": "Rainy Day",
     "featured": false
