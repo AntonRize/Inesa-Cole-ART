@@ -85,10 +85,9 @@ nav a:hover, nav a.active { color: #000; }
     top: 0;
     left: 0;
     z-index: 10;
-    /* Мягкий градиент сверху вниз для идеальной читаемости меню на любом видео-фоне */
-    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
-    border-bottom: none; /* Убрали жесткую границу для изящности */
-    padding: 1.5rem 2rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 60%, transparent 100%);
+    border-bottom: none;
+    padding: 1.8rem 2rem;
 }
 
 .transparent-header h1,
@@ -100,14 +99,16 @@ nav a:hover, nav a.active { color: #000; }
 .transparent-header nav a {
     color: #FFFFFF;
     opacity: 0.85;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6); /* Мягкая тень для контраста */
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .transparent-header nav a:hover,
 .transparent-header nav a.active {
     color: #FFFFFF;
     opacity: 1;
-    text-shadow: 0 1px 8px rgba(255,255,255,0.4);
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.3);
 }
 
 /* --- Main Content --- */
@@ -150,48 +151,54 @@ footer a:hover { color: var(--color-heading); }
    HOMEPAGE - Hero Section
    ============================================================ */
 
+body.homepage {
+    overflow: hidden;
+}
+
 body.homepage main {
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
     max-width: none;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
 }
 
 .hero-section {
-    height: 100vh;
     position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
-    justify-content: center; /* Центрируем текст по горизонтали и вертикали */
+    justify-content: center;
     overflow: hidden;
-    background-color: #111;
+    background-color: #000;
 }
 
-/* Стили для фонового видео */
 #bg-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Растягивает видео на весь экран без искажений */
+    object-fit: cover;
     z-index: 0;
-    animation: fadeInBackground 2s ease-out forwards;
 }
 
-/* Слой затемнения для лучшей читаемости текста */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.35); /* Степень затемнения (от 0.1 до 0.9) */
+    background: rgba(0, 0, 0, 0.35);
     z-index: 1;
 }
 
 .hero-content {
     position: relative;
-    z-index: 2; /* Текст располагается поверх видео и оверлея */
+    z-index: 2;
     animation: fadeInSlideUp 3s ease-out forwards;
     padding: 2rem;
     max-width: 800px;
@@ -206,15 +213,15 @@ body.homepage main {
     line-height: 1.1;
     color: #FFFFFF;
     letter-spacing: 0.03em;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Объемная тень */
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hero-subtitle {
-    font-family: var(--font-body); /* Использование строгого шрифта для подзаголовка */
+    font-family: var(--font-body);
     font-size: clamp(1rem, 3vw, 1.2rem);
     margin: 0 auto;
     font-weight: 300;
-    letter-spacing: 0.35em; /* Очень широкий межбуквенный интервал (премиум вид) */
+    letter-spacing: 0.35em;
     text-transform: uppercase;
     color: #FFFFFF;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
