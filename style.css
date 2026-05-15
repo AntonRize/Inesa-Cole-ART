@@ -85,9 +85,10 @@ nav a:hover, nav a.active { color: #000; }
     top: 0;
     left: 0;
     z-index: 10;
-    background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 1rem 2rem;
+    /* Мягкий градиент сверху вниз для идеальной читаемости меню на любом видео-фоне */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+    border-bottom: none; /* Убрали жесткую границу для изящности */
+    padding: 1.5rem 2rem;
 }
 
 .transparent-header h1,
@@ -98,13 +99,15 @@ nav a:hover, nav a.active { color: #000; }
 
 .transparent-header nav a {
     color: #FFFFFF;
-    opacity: 0.8;
+    opacity: 0.85;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6); /* Мягкая тень для контраста */
 }
 
 .transparent-header nav a:hover,
 .transparent-header nav a.active {
     color: #FFFFFF;
     opacity: 1;
+    text-shadow: 0 1px 8px rgba(255,255,255,0.4);
 }
 
 /* --- Main Content --- */
@@ -155,47 +158,68 @@ body.homepage main {
 
 .hero-section {
     height: 100vh;
-    background-image: url('images/hero-home.jpg');
-    background-size: cover;
-    background-position: center;
-    animation: fadeInBackground 7s ease-out forwards;
     position: relative;
-
-    /* Center the text overlay */
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; /* Центрируем текст по горизонтали и вертикали */
+    overflow: hidden;
+    background-color: #111;
+}
+
+/* Стили для фонового видео */
+#bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Растягивает видео на весь экран без искажений */
+    z-index: 0;
+    animation: fadeInBackground 2s ease-out forwards;
+}
+
+/* Слой затемнения для лучшей читаемости текста */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35); /* Степень затемнения (от 0.1 до 0.9) */
+    z-index: 1;
 }
 
 .hero-content {
-    animation: fadeInSlideUp 4s ease-out forwards;
+    position: relative;
+    z-index: 2; /* Текст располагается поверх видео и оверлея */
+    animation: fadeInSlideUp 3s ease-out forwards;
     padding: 2rem;
-    max-width: 700px;
-    color: #FFFFFF;
+    max-width: 800px;
+    text-align: center;
 }
 
 .hero-big-text {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: clamp(3rem, 8vw, 5.5rem);
     font-weight: 400;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.15;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
     color: #FFFFFF;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Объемная тень */
 }
 
 .hero-subtitle {
-    font-family: var(--font-heading);
-    font-size: clamp(1.2rem, 4vw, 2rem);
-    margin: 0;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    opacity: 0.95;
+    font-family: var(--font-body); /* Использование строгого шрифта для подзаголовка */
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin: 0 auto;
+    font-weight: 300;
+    letter-spacing: 0.35em; /* Очень широкий межбуквенный интервал (премиум вид) */
+    text-transform: uppercase;
     color: #FFFFFF;
-    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    padding-top: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    padding-top: 1.2rem;
     display: inline-block;
 }
 
