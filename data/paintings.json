@@ -287,7 +287,7 @@
     "price": 20,
     "year": "",
     "description": "Feel the rush of the tide with \"Between the Rocks.\" This highly textured, dynamic painting features powerful blue waves crashing between two rugged cliffsides under a soft dawn sky. A beautiful, high-energy piece that perfectly captures the dramatic beauty and constant movement of the open sea.",
-    "available": true,
+    "available": false,
     "shopifyProductId": "10207479005497",
     "image": "images/1777078917566-20260321_131412.jpg",
     "alt": "Between the rocks",
