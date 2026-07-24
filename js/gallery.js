@@ -76,7 +76,7 @@
                         ${soldBadge}
                     </div>
                     <div class="item-details">
-                        <h3>${sanitize(painting.title)}</h3>
+                        <h3><a class="art-link" href="art/${slugify(painting.title)}.html">${sanitize(painting.title)}</a></h3>
                         <p class="medium">${sanitize(painting.medium)}, ${sanitize(painting.dimensions)}</p>
                         ${painting.description ? `<p class="description">${sanitize(painting.description)}</p>` : ''}
                         <div class="price-row">
@@ -123,6 +123,14 @@
         const div = document.createElement('div');
         div.textContent = String(str);
         return div.innerHTML;
+    }
+
+    /**
+     * Build the URL slug for a painting's detail page.
+     * MUST match the slug logic in seo_build.py exactly.
+     */
+    function slugify(title) {
+        return String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'painting';
     }
 
     /* ----------------------------------------------------------
