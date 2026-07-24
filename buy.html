@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Secure Checkout — Inesa Cole ART</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --gold:#8B6914; --gold-hover:#A37E1A; --bg:#FAFAFA; --heading:#222; --muted:#666; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; }
+  body{ font-family:'Lato',Arial,sans-serif; background:var(--bg); color:var(--heading);
+        display:flex; align-items:center; justify-content:center; text-align:center; padding:2rem; min-height:100vh; }
+  .wrap{ max-width:440px; width:100%; }
+  .brand{ font-family:'Playfair Display',Georgia,serif; font-size:1.5rem; letter-spacing:.03em; margin-bottom:2.2rem; }
+  .title{ font-family:'Playfair Display',Georgia,serif; font-size:1.9rem; line-height:1.25; margin:.3rem 0; min-height:1.25em; }
+  .price{ color:var(--gold); font-weight:700; font-size:1.15rem; margin-bottom:1.4rem; min-height:1.2em; }
+  .spinner{ width:44px; height:44px; margin:1.4rem auto; border:3px solid #e8e2d4;
+            border-top-color:var(--gold); border-radius:50%; animation:spin .9s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .status{ color:var(--muted); font-size:.95rem; margin-top:1rem; }
+  .btn{ display:none; margin:1.3rem auto 0; padding:.85rem 1.7rem; background:var(--gold); color:#fff;
+        border:none; border-radius:6px; font-size:1rem; font-family:'Lato',sans-serif; cursor:pointer; text-decoration:none; }
+  .btn:hover{ background:var(--gold-hover); }
+  .fallback{ display:none; margin-top:1.4rem; font-size:.9rem; color:var(--muted); line-height:1.6; }
+  .fallback a{ color:var(--gold); }
+  .secure{ margin-top:2.4rem; font-size:.78rem; color:#aaa; letter-spacing:.05em; text-transform:uppercase; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">Inesa Cole ART</div>
+    <div class="title" id="title">Preparing your checkout</div>
+    <div class="price" id="price"></div>
+    <div class="spinner" id="spinner"></div>
+    <div class="status" id="status">Connecting to secure checkout…</div>
+    <a class="btn" id="retry" href="#">Try again</a>
+    <div class="fallback" id="fallback">
+      If this page doesn't move on its own, <a href="gallery.html">browse the gallery</a>
+      or email <a href="mailto:contact@inesacole.art">contact@inesacole.art</a> to purchase.
+    </div>
+    <div class="secure">Secure checkout powered by Shopify</div>
+  </div>
+
+  <script>
+  /* ============================================================
+     buy.html — one-scan checkout for Inesa Cole ART
+     Reads ?pid=<Shopify product id>, then reproduces exactly what
+     the gallery "Buy Now" button does: build a Storefront client,
+     create a fresh checkout for that product, and redirect the
+     visitor straight to the Shopify card-entry page.
+     ============================================================ */
+  (function () {
+    "use strict";
+
+    // Same public Storefront credentials the gallery already uses.
+    var CONFIG = { domain: "z0byzs-ha.myshopify.com", storefrontAccessToken: "ab2db4a231ed99255380904ce548fb12" };
+    var SDK_URL = "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
+
+    var el = function (id) { return document.getElementById(id); };
+    var titleEl = el("title"), priceEl = el("price"), statusEl = el("status"),
+        spinner = el("spinner"), retry = el("retry"), fallback = el("fallback");
+
+    // Read the product id from the URL (?pid=...)
+    var pid = new URLSearchParams(window.location.search).get("pid");
+
+    // Format a price as a whole-dollar amount, tolerating either
+    // a plain string or a { amount, currencyCode } money object.
+    function money(v) {
+      if (v == null) return "";
+      var n = parseFloat(v);
+      return isNaN(n) ? "" : ("$" + n.toFixed(0));
+    }
+
+    // Reveal the manual fallback (retry button + gallery/email links).
+    function showFallback(msg) {
+      if (msg) statusEl.textContent = msg;
+      spinner.style.display = "none";
+      retry.style.display = "inline-block";
+      fallback.style.display = "block";
+    }
+
+    // Any retry simply reloads the page and runs the whole flow again.
+    retry.addEventListener("click", function (e) { e.preventDefault(); window.location.reload(); });
+
+    // No product id → nothing to buy; show guidance.
+    if (!pid) {
+      titleEl.textContent = "Choose a painting";
+      showFallback("This link didn't include a painting to purchase.");
+      return;
+    }
+
+    var redirected = false;
+
+    // Send the visitor to the Shopify checkout, preferring the card
+    // entry page over Shop Pay's accelerated buttons.
+    function goCheckout(url) {
+      if (redirected || !url) return;
+      redirected = true;
+      if (url.indexOf("skip_shop_pay=") === -1) {
+        url += (url.indexOf("?") === -1 ? "?" : "&") + "skip_shop_pay=true";
+      }
+      window.location.replace(url);
+    }
+
+    // Build the client, look up the product, create a checkout, redirect.
+    function startCheckout() {
+      var client = window.ShopifyBuy.buildClient({
+        domain: CONFIG.domain,
+        storefrontAccessToken: CONFIG.storefrontAccessToken
+      });
+
+      client.product.fetch("gid://shopify/Product/" + pid).then(function (product) {
+        // Show which painting the visitor is buying while checkout builds.
+        if (product && product.title) titleEl.textContent = product.title;
+        try {
+          var v0 = product.variants[0];
+          if (v0 && v0.price) priceEl.textContent = money(v0.price.amount != null ? v0.price.amount : v0.price);
+        } catch (e) {}
+
+        var variantId = product.variants[0].id;
+        return client.checkout.create().then(function (checkout) {
+          return client.checkout.addLineItems(checkout.id, [{ variantId: variantId, quantity: 1 }]);
+        });
+      }).then(function (checkout) {
+        statusEl.textContent = "Redirecting to secure checkout…";
+        goCheckout(checkout.webUrl);
+      }).catch(function (err) {
+        showFallback("We couldn't open the checkout automatically. Please try again.");
+      });
+    }
+
+    // Load the Shopify SDK (once), then start.
+    function loadSDK() {
+      if (window.ShopifyBuy) { startCheckout(); return; }
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = SDK_URL;
+      s.onload = startCheckout;
+      s.onerror = function () { showFallback("Couldn't reach the checkout service. Check your connection and try again."); };
+      document.head.appendChild(s);
+    }
+
+    // Safety net: if we still haven't redirected after 15s, show the fallback.
+    setTimeout(function () { if (!redirected) fallback.style.display = "block"; }, 15000);
+
+    loadSDK();
+  })();
+  </script>
+</body>
+</html>
