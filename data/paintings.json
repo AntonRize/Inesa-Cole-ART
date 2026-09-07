@@ -278,19 +278,5 @@
     "image": "images/1777079024134-20260205_145521.jpg",
     "alt": "Secret Gardens",
     "featured": false
-  },
-  {
-    "id": "painting-1788744028123",
-    "title": "Emerald Field",
-    "medium": "Acryl on canvas, mixed media",
-    "dimensions": "90cm (W)x 60 cm ( H )",
-    "price": 700,
-    "year": "2026",
-    "description": "Emerald Field immerses the viewer in a scene, dreamlike botanical landscape rich with cool jewel tones and heavy tractile depth. Vibrand shades of emerald green, deep teal, and icy cyan layer together to create a luminous, underwater-like meadow, where stylized floral spheres drift above lish, textured stems and foliage. Heavy inpasto and intricate mark-making give the canvas an organic, tactile precence, inviting you to trace the swirling patterns within each glowing bloom.",
-    "available": true,
-    "shopifyProductId": "",
-    "image": "images/1788744024440-20260905_133641.jpg",
-    "alt": "Emerald Field",
-    "featured": false
   }
 ]
