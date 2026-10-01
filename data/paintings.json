@@ -292,5 +292,19 @@
     "image": "images/1789089443715-20260908_131321.jpg",
     "alt": "The Stranger in the Lilac Cloak",
     "featured": false
+  },
+  {
+    "id": "painting-1790821290116",
+    "title": "Ukrainian Sunflower",
+    "medium": "Acrylic on canvas",
+    "dimensions": "122cm (W) x 60cm (H)",
+    "price": 810,
+    "year": "",
+    "description": "The inspiration of this piece was -Glory to Ukraine, a pieceful and beautiful country which was envaded by Russia. Ukrainians go through a lot of hardship, but don't surrender !!! I am amazed by their courage. They're defending their villages, cities, and an indepedent future for their children. The sunflower is the Symbol of Ukraine. In the center of the sunflower I created a miniature landscape of traditional Ukrainian village with small houses, a winding river, green hills, and tall cypress-like trees, to give the veiwers the idea about my Motherland.",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1790821286090-0.jpg",
+    "alt": "Ukrainian Sunflower",
+    "featured": false
   }
 ]
