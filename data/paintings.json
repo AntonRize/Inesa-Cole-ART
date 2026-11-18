@@ -49,7 +49,7 @@
     "price": 240,
     "year": "2025",
     "description": "In this painting I was trying to contrast the sharp, rocky details of the coastal cliff against the fluid, foaming waves of the ocean...",
-    "available": true,
+    "available": false,
     "shopifyProductId": "10189518373177",
     "image": "images/1777028622709-20250314_151647.jpg",
     "alt": "Moonlight",
