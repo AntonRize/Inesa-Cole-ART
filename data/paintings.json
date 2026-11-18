@@ -306,5 +306,19 @@
     "image": "images/1794969708894-20261027_140505.jpg",
     "alt": "Silent Light",
     "featured": false
+  },
+  {
+    "id": "painting-1794970191356",
+    "title": "Dusk on the Mash",
+    "medium": "Acryl on canvas, mixed media",
+    "dimensions": "60cm (W)x 50 cm (H)",
+    "price": 400,
+    "year": "2026",
+    "description": "",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1794970185982-20261030_173449.jpg",
+    "alt": "Dusk on the Mash",
+    "featured": false
   }
 ]
