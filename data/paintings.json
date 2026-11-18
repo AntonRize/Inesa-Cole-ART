@@ -320,5 +320,19 @@
     "image": "images/1794970185982-20261030_173449.jpg",
     "alt": "Dusk on the Mash",
     "featured": false
+  },
+  {
+    "id": "painting-1794971542008",
+    "title": "Wispers of the forest floor",
+    "medium": "Acryl on canvas, mixed media",
+    "dimensions": "50 cm (W) x 40 cm (H)",
+    "price": 400,
+    "year": "2026",
+    "description": "Immerse yourself in the quiet magic of nature with Wispers of the Forest Floor, an original acrylic painting that invites the viewer deep into a tranquil , mist-veiled woodland. Created using paleete-knife texturing techniquees, this piece brings the rich , tactile details of the forest .",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1794971537500-mail.google.jpg",
+    "alt": "Wispers of the forest floor",
+    "featured": false
   }
 ]
