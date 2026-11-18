@@ -292,5 +292,19 @@
     "image": "images/1790821286090-0.jpg",
     "alt": "Ukrainian Sunflower",
     "featured": false
+  },
+  {
+    "id": "painting-1794969713395",
+    "title": "Silent Light",
+    "medium": "Acrylic on canvas",
+    "dimensions": "120 w cm x 60 h cm",
+    "price": 600,
+    "year": "2026",
+    "description": "Rich textural depths meet an expressive, tonal paletein this striking landscape, the interplay of dusky lavenders, deep shadows, and luminous highlights creats a scerene, dreamlikeexpanse along the water's edge, highlighting the organic movement of evening migrationand deep solitude.",
+    "available": true,
+    "shopifyProductId": "",
+    "image": "images/1794969708894-20261027_140505.jpg",
+    "alt": "Silent Light",
+    "featured": false
   }
 ]
